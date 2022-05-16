@@ -1,0 +1,23 @@
+{
+  "name": "vue-project",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5050",
+    "css": "npx tailwindcss -i ./src/assets/build.css -o ./src/assets/tailwinds.css --watch --minify"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.6.1",
+    "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/forms": "^0.5.1",
+    "@tailwindcss/typography": "^0.5.2",
+    "vue": "^3.2.33"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.3",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.9",
+    "vue-svg-loader": "^0.16.0"
+  }
+}
