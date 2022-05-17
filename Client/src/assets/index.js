@@ -16,6 +16,9 @@ routes = {
   "/apis": {
     component: "APIsComponent",
   },
+  "/tools": {
+    component: "ToolsComponent",
+  },
 };
 path = window.location.pathname ? window.location.pathname : "/";
 console.log(path);

@@ -3,6 +3,7 @@ import Welcome from "./page/Welcome.vue";
 import Home from "./page/Dashboard.vue";
 import Auth from "./page/Auth.vue";
 import APIs from "./page/APIs.vue";
+import Tools from "./page/Tools.vue";
 </script>
 
 <template>
@@ -10,6 +11,7 @@ import APIs from "./page/APIs.vue";
   <Home />
   <Auth />
   <APIs />
+  <Tools />
 </template>
 
 <style>

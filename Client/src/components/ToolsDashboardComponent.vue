@@ -4,12 +4,13 @@ import ColorThemeBox from "./ColorThemeBox.vue";
 import ScriptsDisplay from "./ScriptsDisplay.vue";
 import DashboardStats from "./DashboardStats.vue";
 import HeaderSearchbox from "./HeaderSearchbox.vue";
+import ToolsDisplay from "./ToolsDisplay.vue";
 export default {
-  name: "APIsDashboardComponent",
+  name: "ToolsDashboardComponent",
   components: {
     SidebarNavs,
     ColorThemeBox,
-    ScriptsDisplay,
+    ToolsDisplay,
     DashboardStats,
     HeaderSearchbox,
   },
@@ -114,7 +115,7 @@ export default {
               <div>
                 <button
                   type="button"
-                  class="max-w-xs bg-bray-500 flex items-center text-sm rounded-full"
+                  class="max-w-xs bg-bray-500 flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   id="user-menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
@@ -131,6 +132,7 @@ export default {
         </div>
       </div>
       <!-- Content-->
+      <ToolsDisplay />
     </div>
   </div>
 </template>
