@@ -1,4 +1,5 @@
 <script>
+import APIsBox from "./APIsBox.vue";
 import SidebarNavs from "./SidebarNavs.vue";
 import ColorThemeBox from "./ColorThemeBox.vue";
 import ScriptsDisplay from "./ScriptsDisplay.vue";
@@ -7,6 +8,7 @@ import HeaderSearchbox from "./HeaderSearchbox.vue";
 export default {
   name: "APIsDashboardComponent",
   components: {
+    APIsBox,
     SidebarNavs,
     ColorThemeBox,
     ScriptsDisplay,
@@ -130,6 +132,7 @@ export default {
           </div>
         </div>
       </div>
+      <APIsBox />
       <!-- Content-->
     </div>
   </div>
