@@ -20,23 +20,23 @@ export default {
     class="px-4 float-right space-x-2 flex py-2 mt-3 bg-bray-500 shadow-lg rounded"
   >
     <button
-      class="bg-royal p-3 rounded-full shadow-lg border-2 border-gray-700"
+      class="bg-royal p-3 rounded-full shadow-lg border-2 border-transparent"
       onclick="setThemeColor(`royal`)"
     ></button>
     <button
-      class="bg-brew p-3 rounded-full shadow-lg border-2 border-gray-700"
+      class="bg-brew p-3 rounded-full shadow-lg border-2 border-transparent"
       onclick="setThemeColor(`brew`)"
     ></button>
     <button
-      class="bg-emerald p-3 rounded-full shadow-lg border-2 border-gray-700"
+      class="bg-emerald p-3 rounded-full shadow-lg border-2 border-transparent"
       onclick="setThemeColor(`emerald`)"
     ></button>
     <button
-      class="bg-valencia p-3 rounded-full shadow-lg border-2 border-gray-700"
+      class="bg-valencia p-3 rounded-full shadow-lg border-2 border-transparent"
       onclick="setThemeColor(`valencia`)"
     ></button>
     <button
-      class="bg-amethyst p-3 rounded-full shadow-lg border-2 border-gray-700"
+      class="bg-amethyst p-3 rounded-full shadow-lg border-2 border-transparent"
       onclick="setThemeColor(`amethyst`)"
     ></button>
   </div>
