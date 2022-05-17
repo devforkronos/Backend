@@ -1,19 +1,15 @@
 <script setup>
-import Header from "./components/Header.vue";
-import HomeHero from "./components/HomeHero.vue";
-import ColorThemeBox from "./components/ColorThemeBox.vue";
-import Features from "./components/Features.vue";
-import Preview from "./components/Preview.vue";
+import Welcome from "./page/Welcome.vue";
+import Home from "./page/Dashboard.vue";
+import Auth from "./page/Auth.vue";
+import APIs from "./page/APIs.vue";
 </script>
 
 <template>
-  <main>
-    <Header />
-    <ColorThemeBox />
-    <HomeHero />
-    <Features />
-    <Preview />
-  </main>
+  <Welcome />
+  <Home />
+  <Auth />
+  <APIs />
 </template>
 
 <style>

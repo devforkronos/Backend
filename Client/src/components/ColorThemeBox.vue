@@ -35,5 +35,9 @@ export default {
       class="bg-valencia p-3 rounded-full shadow-lg border-2 border-gray-700"
       onclick="setThemeColor(`valencia`)"
     ></button>
+    <button
+      class="bg-amethyst p-3 rounded-full shadow-lg border-2 border-gray-700"
+      onclick="setThemeColor(`amethyst`)"
+    ></button>
   </div>
 </template>
