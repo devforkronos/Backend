@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var Routes = require("../config/routes.json");
 var Router = require("express").Router();
 var DB = require("../sql/index");
 Router.get("/me", function (req, res) {
@@ -50,7 +51,40 @@ Router.get("/me", function (req, res) {
                     }
                 });
             })["catch"](function (err) {
-                res.json({ Success: false, err: err });
+                res.json(Routes.errors["".concat(err.ErrCode)]);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
+Router.get("/script/get/:id", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            DB.getScriptById(req.params.id)
+                .then(function (data) {
+                var script = data.Data[0];
+                res.json({
+                    Success: true,
+                    Data: script
+                });
+            })["catch"](function (err) {
+                res.json(Routes.errors["".concat(err.ErrCode)]);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
+Router.post("/script/create", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            DB.createScript(req.body.token, req.body.data || {})
+                .then(function (data) {
+                res.json({
+                    Success: true,
+                    Data: data.Data
+                });
+            })["catch"](function (err) {
+                res.json(Routes.errors["".concat(err.ErrCode)]);
             });
             return [2 /*return*/];
         });

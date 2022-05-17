@@ -1,0 +1,24 @@
+{
+  "errors": {
+    "500": {
+      "Success": false,
+      "Message": "Internal Server Error",
+      "ErrCode": "500"
+    },
+    "404": {
+      "Success": false,
+      "Message": "Content Not Found",
+      "ErrCode": "404"
+    },
+    "400": {
+      "Success": false,
+      "Message": "Bad Request",
+      "ErrCode": "400"
+    },
+    "403": {
+      "Success": false,
+      "Message": "Invalid Credentials - Forbidden",
+      "ErrCode": "403"
+    }
+  }
+}

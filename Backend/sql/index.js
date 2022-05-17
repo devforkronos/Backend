@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync("./database/db.json");
+var rString = require("../module/rString");
 var low = require("lowdb");
 var db = low(adapter);
 var Master = /** @class */ (function () {
@@ -58,7 +59,7 @@ var Master = /** @class */ (function () {
                             });
                         }
                         catch (err) {
-                            rej({ Err: err });
+                            rej({ ErrCode: 404 });
                         }
                     })];
             });
@@ -67,16 +68,78 @@ var Master = /** @class */ (function () {
     /**
      * Add new script to database
      */
-    Master.prototype.createScript = function (data) {
+    Master.prototype.createScript = function (token, data) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                console.log(token);
+                return [2 /*return*/, new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+                        var user, owner;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    if (!data.content) return [3 /*break*/, 2];
+                                    return [4 /*yield*/, this.userByToken(token)];
+                                case 1:
+                                    user = _a.sent();
+                                    owner = (user["Data"][0] || {}).username || undefined;
+                                    if (owner) {
+                                        try {
+                                            data["owner"] = owner;
+                                            data["id"] = rString(11);
+                                            db.get("Scripts").push(data).write();
+                                            res({ Success: true, Data: data });
+                                        }
+                                        catch (err) {
+                                            console.log(err);
+                                            rej({ ErrCode: 500 });
+                                        }
+                                    }
+                                    else {
+                                        rej({ ErrCode: 403 });
+                                    }
+                                    return [3 /*break*/, 3];
+                                case 2:
+                                    rej({ ErrCode: 400 });
+                                    _a.label = 3;
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    }); })];
+            });
+        });
+    };
+    /**
+     * Get script from database
+     */
+    Master.prototype.getScriptById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (res, rej) {
-                        try {
-                            db.get("Scripts").push(data).write();
-                            res({ Success: true });
+                        if (id) {
+                            var script = db.get("Scripts").filter({ id: id }).value();
+                            if (script.length > 0) {
+                                try {
+                                    if (script) {
+                                        res({
+                                            Success: true,
+                                            Data: script
+                                        });
+                                    }
+                                    else {
+                                        rej({ ErrCode: 404 });
+                                    }
+                                }
+                                catch (err) {
+                                    rej({ ErrCode: 404 });
+                                }
+                            }
+                            else {
+                                rej({ ErrCode: 404 });
+                            }
                         }
-                        catch (err) {
-                            rej({ Err: err });
+                        else {
+                            rej({ ErrCode: 400 });
                         }
                     })];
             });
