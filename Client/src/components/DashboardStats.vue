@@ -14,7 +14,6 @@ export default {
       <div class="relative">
         <div class="absolute inset-0 h-1/2"></div>
         <div class="relative max-w-7xl mx-auto px-4">
-          <h1 class="text-gray-300 text-xl font-bold">My Stats</h1>
           <div class="w-full border-bray-300 border mt-1 mx-auto">
             <dl class="rounded-lg shadow-lg sm:grid lg:grid-cols-3">
               <div

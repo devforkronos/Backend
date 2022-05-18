@@ -27,7 +27,6 @@ export default {
       class="px-4 py-4 grid-cols-1 grid text-gray-300 space-y-4 bg-bray-500 rounded-md"
     >
       <div class="w-full">
-        {{ apis }}
         <label
           v-if="(apis.length || 0) <= 0"
           class="rounded-md relative border border-bray-300 p-4 flex cursor-pointer focus:outline-none"

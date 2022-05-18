@@ -34,12 +34,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var FileSync = require("lowdb/adapters/FileSync");
-var adapter = new FileSync("./database/db.json");
 var Obfuscator = require("../module/obfuscator");
+var Cooler = require("../module/cooler");
 var rString = require("../module/rString");
 var Cryptor = require("../module/crypt");
 var MySQL = require("mysql2");
+var path = require("path");
+var fs = require("fs");
 var Conn = MySQL.createConnection({
     host: "".concat(process.env.MYSQL_HOSTNAME),
     user: "".concat(process.env.MYSQL_USERNAME),
@@ -50,6 +51,21 @@ var Master = /** @class */ (function () {
     function Master(data) {
         this["data"] = data;
         Conn.connect();
+        fs.readdirSync("".concat(__dirname.replace(path.basename(__dirname), ""), "/databases")).forEach(function (table) {
+            try {
+                Conn.query(fs.readFileSync("".concat(__dirname.replace(path.basename(__dirname), ""), "/databases/").concat(table), "utf-8"), function (err, results) {
+                    if (err) {
+                        Cooler.red("Error Initializing MySQL Table '".concat(table, "'\n ").concat(err));
+                    }
+                    else {
+                        Cooler.green("Successfuly Initialized MySQL Table '".concat(table, "'"));
+                    }
+                });
+            }
+            catch (err) {
+                Cooler.red("Error Initializing MySQL Table '".concat(table, "', Error: ").concat(err));
+            }
+        });
     }
     /**
      * Get a user's data by a valid token.

@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import Index from "./assets/index";
-import setThemeColor from "./assets/switchColor";
+import ScrollBar from "./assets/scrollbar";
 
 if (
   !localStorage.color ||
@@ -39,3 +39,4 @@ function setThemeColor(color) {
 }
 `;
 document.head.appendChild(tag);
+ScrollBar();

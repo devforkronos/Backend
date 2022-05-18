@@ -113,7 +113,7 @@ export default {
           </div>
         </div>
       </div>
-      <DashboardStats />
+      <ScriptsDisplay />
     </div>
   </div>
 </template>

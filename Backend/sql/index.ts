@@ -1,9 +1,10 @@
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./database/db.json");
 const Obfuscator = require("../module/obfuscator");
+const Cooler = require("../module/cooler");
 const rString = require("../module/rString");
 const Cryptor = require("../module/crypt");
 const MySQL = require("mysql2");
+const path = require("path");
+const fs = require("fs");
 
 const Conn = MySQL.createConnection({
   host: `${process.env.MYSQL_HOSTNAME}`,
@@ -16,6 +17,30 @@ class Master {
   constructor(data) {
     this["data"] = data;
     Conn.connect();
+    fs.readdirSync(
+      `${__dirname.replace(path.basename(__dirname), "")}/databases`
+    ).forEach((table) => {
+      try {
+        Conn.query(
+          fs.readFileSync(
+            `${__dirname.replace(
+              path.basename(__dirname),
+              ""
+            )}/databases/${table}`,
+            "utf-8"
+          ),
+          function (err, results) {
+            if (err) {
+              Cooler.red(`Error Initializing MySQL Table '${table}'\n ${err}`);
+            } else {
+              Cooler.green(`Successfuly Initialized MySQL Table '${table}'`);
+            }
+          }
+        );
+      } catch (err) {
+        Cooler.red(`Error Initializing MySQL Table '${table}', Error: ${err}`);
+      }
+    });
   }
   /**
    * Get a user's data by a valid token.

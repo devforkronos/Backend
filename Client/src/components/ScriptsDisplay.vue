@@ -18,7 +18,7 @@ export default {
 </script>
 <template>
   <div class="px-4 mt-4">
-    <h1 class="text-gray-300 text-xl font-bold">My Scripts</h1>
+    <h1 class="text-gray-300 text-xl font-bold">My Script Collection</h1>
     <ul
       role="list"
       class="grid grid-cols-1 mt-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
@@ -40,7 +40,7 @@ export default {
                 <a
                   :href="`/manage-script?id=${item.id}`"
                   target="_blank"
-                  :class="`relative -mr-px w-0 flex-1 space-x-1 inline-flex items-center justify-center py-4 text-sm font-medium border border-transparent rounded-bl-lg hover:text-${color}`"
+                  :class="`relative -mr-px w-0 flex-1 space-x-1 inline-flex items-center justify-center py-3 text-sm font-medium border border-transparent rounded-bl-lg hover:text-${color}`"
                 >
                   <span class="ml-3">Manage</span>
                   <svg
