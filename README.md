@@ -25,4 +25,4 @@
 
 ## License
 
-The [LICENSE](./LICENSE) applys to every aspect of this project including images, backend code & frontend code. Also, paid distribution and commercial use is strictly prohibited.
+The **[LICENSE](./LICENSE)** applys to every aspect of this project including images, backend code & frontend code. Also, paid distribution and commercial use is strictly prohibited.
