@@ -18,7 +18,6 @@ export default {
     );
     const { Data: apis } = await response.json();
     this.apis = apis;
-    console.log(localStorage.token);
   },
 };
 </script>

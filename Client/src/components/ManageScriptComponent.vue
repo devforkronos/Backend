@@ -23,7 +23,7 @@ export default {
       `http://${window.$BackendURL}/api/v1/script/get/${Query.get("id")}`
     );
     const { Data: script } = await response.json();
-    this.script = script;
+    this.script = script || {};
   },
 };
 </script>
@@ -123,7 +123,7 @@ export default {
       <div class="px-4 py-4">
         <div class="grid-cols-2 grid">
           <h1 class="text-gray-200 font-bold text-3xl">
-            <span>{{ script["name"] }}</span>
+            <span>{{ script["name"] || "" }}</span>
           </h1>
           <div>
             <button

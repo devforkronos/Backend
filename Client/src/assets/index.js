@@ -27,7 +27,6 @@ routes = {
   },
 };
 path = window.location.pathname ? window.location.pathname : "/";
-console.log(path);
 routes[path]
   ? (document.getElementById(routes[path].component).style.display = "")
   : "";

@@ -12,7 +12,6 @@ export default {
       `http://${window.$BackendURL}/api/v1/script/owner/jub0t`
     );
     const { Data: scripts } = await response.json();
-    console.log(scripts);
     this.scripts = scripts;
   },
 };
