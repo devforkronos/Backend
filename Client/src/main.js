@@ -5,7 +5,7 @@ if (!localStorage.color) {
   localStorage.color = "brew";
 }
 
-window.$production = false;
+window.$production = true;
 window.$productionURL = "panel.jubot.site";
 window.$developmentURL = "localhost:5000";
 
