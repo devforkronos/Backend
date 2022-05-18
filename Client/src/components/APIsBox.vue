@@ -8,14 +8,11 @@ export default {
     };
   },
   async created() {
-    const response = await fetch(
-      `http://${window.$BackendURL}/api/v1/apis/me`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ token: localStorage.token }),
-      }
-    );
+    const response = await fetch(`${window.$BackendURL}/api/v1/apis/me`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: localStorage.token }),
+    });
     const { Data: apis } = await response.json();
     this.apis = apis;
   },

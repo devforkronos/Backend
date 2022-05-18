@@ -20,7 +20,7 @@ export default {
   },
   async created() {
     const response = await fetch(
-      `http://${window.$BackendURL}/api/v1/script/get/${Query.get("id")}`
+      `${window.$BackendURL}/api/v1/script/get/${Query.get("id")}`
     );
     const { Data: script } = await response.json();
     this.script = script || {};

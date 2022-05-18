@@ -5,9 +5,8 @@ if (!localStorage.color) {
   localStorage.color = "brew";
 }
 
-window.$production = false;
-window.$productionURL = "panel.jubot.site";
-window.$developmentURL = "localhost:5000";
+window.$productionURL = "https://panel.jubot.site";
+window.$developmentURL = "http://localhost:5000";
 
 var scripts = ["/src/assets/taildown.js", "/src/assets/index.js"];
 for (let i = 0; i < scripts.length; i++) {
@@ -19,6 +18,7 @@ for (let i = 0; i < scripts.length; i++) {
   }, i * 100);
 }
 
-window.$BackendURL =
-  window.$production == true ? window.$productionURL : window.$developmentURL;
+window.$BackendURL = !window.location.search.includes("localhost")
+  ? window.$productionURL
+  : window.$developmentURL;
 createApp(App).mount("#app");

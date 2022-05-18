@@ -9,7 +9,7 @@ export default {
   },
   async created() {
     const response = await fetch(
-      `http://${window.$BackendURL}/api/v1/script/owner/jub0t`
+      `${window.$BackendURL}/api/v1/script/owner/jub0t`
     );
     const { Data: scripts } = await response.json();
     this.scripts = scripts;
