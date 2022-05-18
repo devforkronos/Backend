@@ -37,12 +37,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync("./database/db.json");
 var rString = require("../module/rString");
-var low = require("lowdb");
-var db = low(adapter);
+var Cryptor = require("../module/crypt");
+var MySQL = require("mysql2");
+var Conn = MySQL.createConnection({
+    host: "".concat(process.env.MYSQL_HOSTNAME),
+    user: "".concat(process.env.MYSQL_USERNAME),
+    password: "".concat(process.env.MYSQL_PASSWORD),
+    database: "".concat(process.env.MYSQL_DATABASE_NAME),
+});
 var Master = /** @class */ (function () {
     function Master(data) {
         this["data"] = data;
-        db.defaults({ Users: [], APIKeys: [], Scripts: [] }).write();
+        Conn.connect();
     }
     /**
      * Get a user's data by a valid token.
@@ -51,16 +57,19 @@ var Master = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (res, rej) {
-                        var user = db.get("Users").filter({ token: token }).value();
-                        try {
-                            res({
-                                Success: true,
-                                Data: user
-                            });
-                        }
-                        catch (err) {
-                            rej({ ErrCode: 404 });
-                        }
+                        Conn.query("SELECT * FROM users WHERE token = ?", [token], function (error, results) {
+                            if (error) {
+                                rej({ ErrCode: 404 });
+                            }
+                            else {
+                                if (results.length > 0) {
+                                    res(results[0]);
+                                }
+                                else {
+                                    rej({ ErrCode: 404 });
+                                }
+                            }
+                        });
                     })];
             });
         });
@@ -69,81 +78,91 @@ var Master = /** @class */ (function () {
      * Add new script to database
      */
     Master.prototype.createScript = function (token, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            var id, Owner;
             return __generator(this, function (_a) {
-                console.log(token);
-                return [2 /*return*/, new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
-                        var user, owner;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    if (!data.content) return [3 /*break*/, 2];
-                                    return [4 /*yield*/, this.userByToken(token)];
-                                case 1:
-                                    user = _a.sent();
-                                    owner = (user["Data"][0] || {}).username || undefined;
-                                    if (owner) {
-                                        try {
-                                            data["owner"] = owner;
-                                            data["id"] = rString(11);
-                                            db.get("Scripts").push(data).write();
-                                            res({ Success: true, Data: data });
-                                        }
-                                        catch (err) {
-                                            console.log(err);
-                                            rej({ ErrCode: 500 });
-                                        }
-                                    }
-                                    else {
-                                        rej({ ErrCode: 403 });
-                                    }
-                                    return [3 /*break*/, 3];
-                                case 2:
-                                    rej({ ErrCode: 400 });
-                                    _a.label = 3;
-                                case 3: return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        id = rString(13);
+                        return [4 /*yield*/, this.userByToken(token)];
+                    case 1:
+                        Owner = _a.sent();
+                        console.log(Owner);
+                        Conn.query("INSERT INTO scripts(content, owner, id) VALUES(?, ?, ?)", [Cryptor.encrypt(data.content), Owner["username"], id], function (err, results) {
+                            if (err) {
+                                console.log(err);
+                                rej({ ErrCode: 500 });
+                            }
+                            else {
+                                console.log(results);
+                                res({
+                                    Data: { id: id },
+                                });
                             }
                         });
-                    }); })];
+                        return [2 /*return*/];
+                }
             });
-        });
+        }); });
     };
     /**
      * Get script from database
      */
     Master.prototype.getScriptById = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, new Promise(function (res, rej) {
-                        if (id) {
-                            var script = db.get("Scripts").filter({ id: id }).value();
-                            if (script.length > 0) {
-                                try {
-                                    if (script) {
-                                        res({
-                                            Success: true,
-                                            Data: script
-                                        });
-                                    }
-                                    else {
-                                        rej({ ErrCode: 404 });
-                                    }
-                                }
-                                catch (err) {
-                                    rej({ ErrCode: 404 });
-                                }
-                            }
-                            else {
-                                rej({ ErrCode: 404 });
-                            }
+                Conn.query("SELECT * FROM scripts WHERE id = ?", [id], function (err, results) {
+                    if (err) {
+                        console.log(err);
+                        rej({ ErrCode: 500 });
+                    }
+                    else {
+                        if (results.length) {
+                            var script = results[0];
+                            script.content = Cryptor.decrypt(script.content);
+                            res({
+                                Data: script,
+                            });
                         }
                         else {
-                            rej({ ErrCode: 400 });
+                            rej({ ErrCode: 404 });
                         }
-                    })];
+                    }
+                });
+                return [2 /*return*/];
             });
-        });
+        }); });
+    };
+    Master.prototype.getScriptsByUser = function (owner) {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                Conn.query("SELECT * FROM scripts WHERE LOWER(owner) = ?", [owner.toLowerCase()], function (err, results) {
+                    if (err) {
+                        console.log(err);
+                        rej({ ErrCode: 500 });
+                    }
+                    else {
+                        if (results.length) {
+                            results = results.filter(function (script) {
+                                delete script.content;
+                                //  script.content = Cryptor.decrypt(script.content);
+                                return script;
+                            });
+                            res({
+                                Data: results,
+                            });
+                        }
+                        else {
+                            rej({ ErrCode: 404 });
+                        }
+                    }
+                });
+                return [2 /*return*/];
+            });
+        }); });
     };
     return Master;
 }());

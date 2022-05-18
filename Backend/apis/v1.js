@@ -34,46 +34,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
+var Obfuscator = require("../module/obfuscator");
 var Routes = require("../config/routes.json");
+var Cryptor = require("../module/crypt");
 var Router = require("express").Router();
 var DB = require("../sql/index");
-Router.get("/me", function (req, res) {
+Router.post("/me", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            DB.userByToken("ABC")
+            DB.userByToken(req.body.token)
                 .then(function (data) {
-                var user = data.Data[0];
-                console.log(user);
                 res.json({
                     Success: true,
-                    Data: {
-                        Username: user.username
-                    }
+                    Data: data,
                 });
-            })["catch"](function (err) {
+            })
+                .catch(function (err) {
                 res.json(Routes.errors["".concat(err.ErrCode)]);
             });
             return [2 /*return*/];
         });
     });
 });
-Router.get("/script/get/:id", function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            DB.getScriptById(req.params.id)
-                .then(function (data) {
-                var script = data.Data[0];
+Router.get("/script/get/:id", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        DB.getScriptById(req.params.id)
+            .then(function (data) {
+            if (req.query.type == "txt") {
+                if (data.Data.obfuscate == true || req.query.obfuscate == "true") {
+                    res.end(Obfuscator(data.Data.content));
+                }
+                else {
+                    res.end(data.Data.content);
+                }
+            }
+            else {
                 res.json({
                     Success: true,
-                    Data: script
+                    Data: data.Data,
                 });
-            })["catch"](function (err) {
-                res.json(Routes.errors["".concat(err.ErrCode)]);
-            });
-            return [2 /*return*/];
+            }
+        })
+            .catch(function (err) {
+            res.json(Routes.errors["".concat(err.ErrCode)]);
         });
+        return [2 /*return*/];
     });
-});
+}); });
 Router.post("/script/create", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -81,11 +89,45 @@ Router.post("/script/create", function (req, res) {
                 .then(function (data) {
                 res.json({
                     Success: true,
-                    Data: data.Data
+                    Data: data.Data,
                 });
-            })["catch"](function (err) {
+            })
+                .catch(function (err) {
                 res.json(Routes.errors["".concat(err.ErrCode)]);
             });
+            return [2 /*return*/];
+        });
+    });
+});
+Router.get("/script/owner/:owner", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            DB.getScriptsByUser(req.params.owner)
+                .then(function (data) {
+                res.json({
+                    Success: true,
+                    Data: data.Data,
+                });
+            })
+                .catch(function (err) {
+                res.json(Routes.errors["".concat(err.ErrCode)]);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
+Router.post("/tools/obfuscator", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            try {
+                res.json({
+                    Success: true,
+                    Data: { Code: Obfuscator(req.body.code || "") },
+                });
+            }
+            catch (_b) {
+                res.json(Routes.errors["500"]);
+            }
             return [2 /*return*/];
         });
     });

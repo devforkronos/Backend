@@ -4,6 +4,7 @@ import Home from "./page/Dashboard.vue";
 import Auth from "./page/Auth.vue";
 import APIs from "./page/APIs.vue";
 import Tools from "./page/Tools.vue";
+import Manage from "./page/Manage.vue";
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import Tools from "./page/Tools.vue";
   <Auth />
   <APIs />
   <Tools />
+  <Manage />
 </template>
 
 <style>

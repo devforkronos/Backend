@@ -1,22 +1,29 @@
 <script>
+let Query = new URLSearchParams(window.location.search);
 import SidebarNavs from "./SidebarNavs.vue";
 import ColorThemeBox from "./ColorThemeBox.vue";
-import ScriptsDisplay from "./ScriptsDisplay.vue";
-import DashboardStats from "./DashboardStats.vue";
 import HeaderSearchbox from "./HeaderSearchbox.vue";
+import ToggleButton from "./ToggleButton.vue";
 export default {
   name: "DashboardComponent",
   components: {
     SidebarNavs,
     ColorThemeBox,
-    ScriptsDisplay,
-    DashboardStats,
     HeaderSearchbox,
+    ToggleButton,
   },
   data() {
     return {
+      script: {},
       color: localStorage.color,
     };
+  },
+  async created() {
+    const response = await fetch(
+      `http://${window.$BackendURL}/api/v1/script/get/${Query.get("id")}`
+    );
+    const { Data: script } = await response.json();
+    this.script = script;
   },
 };
 </script>
@@ -113,8 +120,41 @@ export default {
           </div>
         </div>
       </div>
-      <DashboardStats />
-      <ScriptsDisplay />
+      <div class="px-4 py-4">
+        <div class="grid-cols-2 grid">
+          <h1 class="text-gray-200 font-bold text-3xl">
+            <span>{{ script["name"] }}</span>
+          </h1>
+          <div>
+            <button
+              :class="`bg-${color} float-right text-white rounded-md px-9 py-3`"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+        <div class="space-y-3 mt-5">
+          <div class="grid text-gray-300 items-center flex w-full grid-cols-2">
+            <div>Obfuscation</div>
+            <div class="w-full float-right">
+              <ToggleButton :data="script.obfuscate" />
+            </div>
+          </div>
+          <div class="grid text-gray-300 items-center flex w-full grid-cols-2">
+            <div>Private(Key system)</div>
+            <div class="w-full float-right">
+              <ToggleButton :data="script.private" />
+            </div>
+          </div>
+        </div>
+
+        <textarea
+          v-model="script.content"
+          :class="`scrollbar-thin scrollbar-thumb-${color} scrollbar-track-bray-400 overflow-y-scroll rounded text-gray-400 h-screen text-sm bg-bray-500 border border-bray-300 resize-none w-full mt-5 focus:outline-none px-3 py-3`"
+        >
+        </textarea>
+      </div>
+      <!-- Content -->
     </div>
   </div>
 </template>

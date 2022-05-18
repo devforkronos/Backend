@@ -19,6 +19,9 @@ routes = {
   "/tools": {
     component: "ToolsComponent",
   },
+  "/manage-script": {
+    component: "ManageComponent",
+  },
 };
 path = window.location.pathname ? window.location.pathname : "/";
 console.log(path);
