@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import Index from "./assets/index";
 
 if (!localStorage.color) {
   localStorage.color = "brew";
@@ -8,15 +9,15 @@ if (!localStorage.color) {
 window.$productionURL = "https://panel.jubot.site";
 window.$developmentURL = "http://localhost:5000";
 
-var scripts = ["@/assets/taildown.js", "@/assets/index.js"];
-for (let i = 0; i < scripts.length; i++) {
-  setTimeout(() => {
-    const script = scripts[i];
-    let tag = document.createElement("script");
-    tag.setAttribute("src", script);
-    document.head.appendChild(tag);
-  }, i * 100);
-}
+// var scripts = ["/src/assets/taildown.js", "/src/assets/index.js"];
+// for (let i = 0; i < scripts.length; i++) {
+//   setTimeout(() => {
+//     const script = scripts[i];
+//     let tag = document.createElement("script");
+//     tag.setAttribute("src", script);
+//     document.head.appendChild(tag);
+//   }, i * 100);
+// }
 
 console.log();
 window.$BackendURL =
@@ -24,3 +25,4 @@ window.$BackendURL =
     ? window.$developmentURL
     : window.$productionURL;
 createApp(App).mount("#app");
+Index();

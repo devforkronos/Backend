@@ -193,3 +193,5 @@ class TailDown {
     Prism.highlightAll();
   }
 }
+
+export default TailDown;
