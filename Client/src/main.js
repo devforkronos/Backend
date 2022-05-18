@@ -18,7 +18,9 @@ for (let i = 0; i < scripts.length; i++) {
   }, i * 100);
 }
 
-window.$BackendURL = !window.location.search.includes("localhost")
-  ? window.$productionURL
-  : window.$developmentURL;
+console.log();
+window.$BackendURL =
+  window.location.hostname == "localhost"
+    ? window.$developmentURL
+    : window.$productionURL;
 createApp(App).mount("#app");
