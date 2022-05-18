@@ -1,6 +1,5 @@
 require("dotenv").config();
 const salt = process.env.ENCRYPT_KEY;
-
 module.exports = {
   encrypt: (text) => {
     const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
