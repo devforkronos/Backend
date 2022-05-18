@@ -31,7 +31,7 @@ export default {
           <div class="w-full mt-3 grid-cols-2 grid">
             <div>
               <h2 class="text-2xl font-bold">My APIs</h2>
-              <p :class="`text-sm text-${color}`">
+              <p :class="`text-sm text-gray-400`">
                 Manage your BloxSasfe data programatically.
               </p>
             </div>
@@ -50,14 +50,16 @@ export default {
             class="rounded-md relative border border-bray-300 p-4 flex cursor-pointer focus:outline-none"
           >
             <div class="ml-3 flex flex-col">
-              <span class="block text-sm text-gray-400">
+              <span class="block text-sm text-gray-300">
                 You currently have no API keys. Click the button on Top-right to
                 create one.
               </span>
             </div>
           </label>
           <div v-for="(item, index) in apis" class="w-full">
-            <label
+            <a
+              :href="`/manage-api?id=${item.id}`"
+              target="_blank"
               class="rounded-md relative border w-full border-bray-300 p-4 flex cursor-pointer focus:outline-none"
             >
               <div class="ml-3 flex flex-col">
@@ -68,7 +70,7 @@ export default {
                   {{ item.description }}
                 </span>
               </div>
-            </label>
+            </a>
           </div>
         </div>
       </div>

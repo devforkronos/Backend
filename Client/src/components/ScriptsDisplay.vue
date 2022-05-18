@@ -12,7 +12,7 @@ export default {
       `${window.$BackendURL}/api/v1/script/owner/jub0t`
     );
     const { Data: scripts } = await response.json();
-    this.scripts = scripts | [];
+    this.scripts = scripts || [];
   },
 };
 </script>
@@ -30,8 +30,7 @@ export default {
         >
           <div class="ml-3 flex flex-col">
             <span class="block text-sm text-gray-400">
-              You currently have no API keys. Click the button on Top-right to
-              create one.
+              You haven't published a script yet.
             </span>
           </div>
         </label>

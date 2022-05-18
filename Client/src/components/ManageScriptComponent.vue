@@ -19,11 +19,17 @@ export default {
     };
   },
   async created() {
-    const response = await fetch(
-      `${window.$BackendURL}/api/v1/script/get/${Query.get("id")}`
-    );
-    const { Data: script } = await response.json();
-    this.script = script || {};
+    let id = Query.get("id");
+    if (id) {
+      const response = await fetch(
+        `${window.$BackendURL}/api/v1/script/get/${id}`
+      );
+      const { Data: script } = await response.json();
+      this.script = script || {};
+      if (!script.content) {
+        script.content = script.obfuscated_content;
+      }
+    }
   },
 };
 </script>
