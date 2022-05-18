@@ -32,8 +32,10 @@ createApp(App).mount("#app");
 Index();
 
 let tag = document.createElement("script");
-tag.innerHTML = function setThemeColor(color) {
+tag.innerHTML = `
+function setThemeColor(color) {
   localStorage.color = color;
   window.location.reload();
-};
+}
+`;
 document.head.appendChild(tag);
