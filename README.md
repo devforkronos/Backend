@@ -13,8 +13,8 @@
 
 ## Installtion
 
-- [Frontend Installation](/Client/README.md)
-- [Backend Installation](/Backend/README.md)
+- **[Frontend Installation](/Client/README.md)**
+- **[Backend Installation](/Backend/README.md)**
 
 ## Preview
 
