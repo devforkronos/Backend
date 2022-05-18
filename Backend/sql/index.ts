@@ -108,6 +108,9 @@ class Master {
       );
     });
   }
+  /**
+   * Get user's scripts by username, private script contetn is removed
+   */
   getScriptsByUser(owner) {
     return new Promise(async (res, rej) => {
       Conn.query(
@@ -130,6 +133,50 @@ class Master {
             } else {
               rej({ ErrCode: 404 });
             }
+          }
+        }
+      );
+    });
+  }
+  /**
+   * Get user's APIs by token.
+   */
+  getAPIsByToken(token) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            this.getAPIsByUsername(Owner["username"])
+              .then((results) => {
+                res({ Data: results["Data"] });
+              })
+              .catch((err) => {
+                rej({ ErrCode: 403 });
+              });
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          rej({ ErrCode: err.ErrCode });
+        });
+    });
+  }
+  /**
+   * Get user's APIs by token. Never send back this data to client as response
+   */
+  getAPIsByUsername(username) {
+    return new Promise(async (res, rej) => {
+      Conn.query(
+        "SELECT * FROM apis WHERE owner = ?",
+        [username],
+        function (err, results) {
+          if (err) {
+            rej({ ErrCode: 500 });
+          } else {
+            res({
+              Data: results,
+            });
           }
         }
       );

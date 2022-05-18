@@ -4,11 +4,11 @@ function setThemeColor(color) {
 }
 
 routes = {
+  "/": {
+    component: "WelcomeComponent",
+  },
   "/dashboard": {
     component: "HomeComponent",
-  },
-  "/welcome": {
-    component: "WelcomeComponent",
   },
   "/auth": {
     component: "AuthComponent",

@@ -132,4 +132,21 @@ Router.post("/tools/obfuscator", function (req, res) {
         });
     });
 });
+Router.post("/apis/me", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            DB.getAPIsByToken(req.body.token)
+                .then(function (data) {
+                res.json({
+                    Success: true,
+                    Data: data.Data,
+                });
+            })
+                .catch(function (err) {
+                res.json(Routes.errors["".concat(err.ErrCode)]);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
 module.exports = Router;

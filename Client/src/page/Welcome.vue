@@ -9,7 +9,6 @@ import Preview from "../components/Preview.vue";
 <template>
   <main style="display: none" id="WelcomeComponent">
     <Header />
-    <ColorThemeBox />
     <HomeHero />
     <Features />
   </main>

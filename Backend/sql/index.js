@@ -148,6 +148,9 @@ var Master = /** @class */ (function () {
             });
         }); });
     };
+    /**
+     * Get user's scripts by username, private script contetn is removed
+     */
     Master.prototype.getScriptsByUser = function (owner) {
         var _this = this;
         return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
@@ -171,6 +174,57 @@ var Master = /** @class */ (function () {
                         else {
                             rej({ ErrCode: 404 });
                         }
+                    }
+                });
+                return [2 /*return*/];
+            });
+        }); });
+    };
+    /**
+     * Get user's APIs by token.
+     */
+    Master.prototype.getAPIsByToken = function (token) {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.userByToken(token)
+                    .then(function (Owner) {
+                    if (Owner) {
+                        _this.getAPIsByUsername(Owner["username"])
+                            .then(function (results) {
+                            res({ Data: results["Data"] });
+                        })
+                            .catch(function (err) {
+                            rej({ ErrCode: 403 });
+                        });
+                    }
+                    else {
+                        rej({ ErrCode: 403 });
+                    }
+                })
+                    .catch(function (err) {
+                    rej({ ErrCode: err.ErrCode });
+                });
+                return [2 /*return*/];
+            });
+        }); });
+    };
+    /**
+     * Get user's APIs by token. Never send back this data to client as response
+     */
+    Master.prototype.getAPIsByUsername = function (username) {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                Conn.query("SELECT * FROM apis WHERE owner = ?", [username], function (err, results) {
+                    if (err) {
+                        rej({ ErrCode: 500 });
+                    }
+                    else {
+                        res({
+                            Data: results,
+                        });
                     }
                 });
                 return [2 /*return*/];

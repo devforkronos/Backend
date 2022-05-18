@@ -11,6 +11,11 @@
 - Key System
 - Discord Webhook Integration
 
+## Installtion
+
+- [Frontend Installation](/Client/README.md)
+- [Backend Installation](/Backend/README.md)
+
 ## Preview
 
 ![Image](./preview//BlueAPIs.jpg)

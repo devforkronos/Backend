@@ -75,4 +75,17 @@ Router.post("/tools/obfuscator", async function (req, res) {
   }
 });
 
+Router.post("/apis/me", async function (req, res) {
+  DB.getAPIsByToken(req.body.token)
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
 module.exports = Router;

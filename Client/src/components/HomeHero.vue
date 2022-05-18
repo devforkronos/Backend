@@ -21,16 +21,17 @@ export default {
             Manage, host and secure your roblox scripts from a web-based panel!
           </p>
           <div class="flex flex-wrap">
-            <button
+            <a
+              href="/dashboard"
               onclick="document.getElementById('login__').style.display = 'block'"
               :class="`px-8 py-3 m-2 text-lg rounded text-gray-50 bg-${color}`"
             >
-              Let's Start
-            </button>
+              My Dashboard
+            </a>
             <a
-              href="/earn"
+              href="/explore"
               class="px-8 py-3 m-2 cubano text-lg text-gray-50 border rounded border-gray-300"
-              >Play</a
+              >Explore</a
             >
           </div>
         </div>
