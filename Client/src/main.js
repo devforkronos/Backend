@@ -6,7 +6,7 @@ if (!localStorage.color) {
 }
 
 window.$production = false;
-window.$productionURL = "";
+window.$productionURL = "panel.jubot.site";
 window.$developmentURL = "localhost:5000";
 
 var scripts = ["/src/assets/taildown.js", "/src/assets/index.js"];
