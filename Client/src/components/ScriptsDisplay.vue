@@ -23,7 +23,7 @@ export default {
       role="list"
       class="grid grid-cols-1 mt-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
     >
-      <div class="lg:col-span-2 w-full">
+      <div class="lg:col-span-3 lg:col-span-2 w-full">
         <label
           v-if="(scripts.length || 0) <= 0"
           class="rounded-md w-full relative border border-bray-300 p-4 flex cursor-pointer focus:outline-none"
