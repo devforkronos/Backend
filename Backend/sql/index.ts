@@ -27,12 +27,12 @@ class Master {
         [token],
         function (error, results) {
           if (error) {
-            rej({ ErrCode: 404 });
+            rej({ ErrCode: 500 });
           } else {
             if (results.length > 0) {
               res(results[0]);
             } else {
-              rej({ ErrCode: 404 });
+              rej({ ErrCode: 403 });
             }
           }
         }
@@ -146,19 +146,23 @@ class Master {
       this.userByToken(token)
         .then((Owner) => {
           if (Owner) {
-            this.getAPIsByUsername(Owner["username"])
-              .then((results) => {
-                res({ Data: results["Data"] });
-              })
-              .catch((err) => {
-                rej({ ErrCode: 403 });
-              });
+            if (Owner["username"]) {
+              this.getAPIsByUsername(Owner["username"])
+                .then((results) => {
+                  res({ Data: results["Data"] });
+                })
+                .catch((err) => {
+                  rej({ ErrCode: err.errCode });
+                });
+            } else {
+              rej({ ErrCode: 403 });
+            }
           } else {
             rej({ ErrCode: 403 });
           }
         })
         .catch((err) => {
-          rej({ ErrCode: err.ErrCode });
+          rej({ ErrCode: 403 });
         });
     });
   }

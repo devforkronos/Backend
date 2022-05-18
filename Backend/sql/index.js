@@ -60,14 +60,14 @@ var Master = /** @class */ (function () {
                 return [2 /*return*/, new Promise(function (res, rej) {
                         Conn.query("SELECT * FROM users WHERE token = ?", [token], function (error, results) {
                             if (error) {
-                                rej({ ErrCode: 404 });
+                                rej({ ErrCode: 500 });
                             }
                             else {
                                 if (results.length > 0) {
                                     res(results[0]);
                                 }
                                 else {
-                                    rej({ ErrCode: 404 });
+                                    rej({ ErrCode: 403 });
                                 }
                             }
                         });
@@ -191,20 +191,25 @@ var Master = /** @class */ (function () {
                 this.userByToken(token)
                     .then(function (Owner) {
                     if (Owner) {
-                        _this.getAPIsByUsername(Owner["username"])
-                            .then(function (results) {
-                            res({ Data: results["Data"] });
-                        })
-                            .catch(function (err) {
+                        if (Owner["username"]) {
+                            _this.getAPIsByUsername(Owner["username"])
+                                .then(function (results) {
+                                res({ Data: results["Data"] });
+                            })
+                                .catch(function (err) {
+                                rej({ ErrCode: err.errCode });
+                            });
+                        }
+                        else {
                             rej({ ErrCode: 403 });
-                        });
+                        }
                     }
                     else {
                         rej({ ErrCode: 403 });
                     }
                 })
                     .catch(function (err) {
-                    rej({ ErrCode: err.ErrCode });
+                    rej({ ErrCode: 403 });
                 });
                 return [2 /*return*/];
             });
