@@ -1,10 +1,6 @@
 import TailDown from "./taildown";
-function index() {
-  function setThemeColor(color) {
-    localStorage.color = color;
-    window.location.reload();
-  }
 
+function index() {
   const routes = {
     "/": {
       component: "WelcomeComponent",

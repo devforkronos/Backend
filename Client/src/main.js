@@ -1,8 +1,13 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import Index from "./assets/index";
+import setThemeColor from "./assets/switchColor";
 
-if (!localStorage.color) {
+if (
+  !localStorage.color ||
+  localStorage.color == "undefined" ||
+  localStorage.color == ""
+) {
   localStorage.color = "brew";
 }
 
@@ -19,10 +24,16 @@ window.$developmentURL = "http://localhost:5000";
 //   }, i * 100);
 // }
 
-console.log();
 window.$BackendURL =
   window.location.hostname == "localhost"
     ? window.$developmentURL
     : window.$productionURL;
 createApp(App).mount("#app");
 Index();
+
+let tag = document.createElement("script");
+tag.innerHTML = function setThemeColor(color) {
+  localStorage.color = color;
+  window.location.reload();
+};
+document.head.appendChild(tag);
