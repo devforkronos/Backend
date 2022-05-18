@@ -8,7 +8,7 @@ if (!localStorage.color) {
 window.$productionURL = "https://panel.jubot.site";
 window.$developmentURL = "http://localhost:5000";
 
-var scripts = ["/src/assets/taildown.js", "/src/assets/index.js"];
+var scripts = ["@/assets/taildown.js", "@/assets/index.js"];
 for (let i = 0; i < scripts.length; i++) {
   setTimeout(() => {
     const script = scripts[i];
