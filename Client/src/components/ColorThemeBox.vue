@@ -1,11 +1,4 @@
 <script>
-var scripts = ["/src/assets/index.js"];
-scripts.forEach((script) => {
-  let tag = document.createElement("script");
-  tag.setAttribute("src", script);
-  document.head.appendChild(tag);
-});
-
 export default {
   name: "ColorThemeBox",
   data() {
@@ -16,8 +9,14 @@ export default {
 };
 </script>
 <template>
+  <h1 class="text-gray-300 text-sm px-4">
+    <span>By </span>
+    <a href="https://github.com/jareer12/" :class="`text-${color}`"
+      >github.com/jareer12</a
+    >
+  </h1>
   <div
-    class="px-4 float-right space-x-2 flex py-2 mt-3 bg-bray-500 shadow-lg rounded"
+    class="px-4 float-right space-x-2 flex py-2 bg-bray-500 shadow-lg rounded"
   >
     <button
       class="bg-royal p-3 rounded-full shadow-lg border-2 border-transparent"

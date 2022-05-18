@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync("./database/db.json");
+var Obfuscator = require("../module/obfuscator");
 var rString = require("../module/rString");
 var Cryptor = require("../module/crypt");
 var MySQL = require("mysql2");
@@ -80,29 +81,37 @@ var Master = /** @class */ (function () {
     Master.prototype.createScript = function (token, data) {
         var _this = this;
         return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
-            var id, Owner;
+            var id;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        id = rString(13);
-                        return [4 /*yield*/, this.userByToken(token)];
-                    case 1:
-                        Owner = _a.sent();
-                        console.log(Owner);
-                        Conn.query("INSERT INTO scripts(content, owner, id) VALUES(?, ?, ?)", [Cryptor.encrypt(data.content), Owner["username"], id], function (err, results) {
+                id = rString(13);
+                this.userByToken(token)
+                    .then(function (Owner) {
+                    if (Owner) {
+                        var name_1 = data.name;
+                        if (!name_1)
+                            rej({ ErrCode: 400 });
+                        var content = Cryptor.encrypt(data.content);
+                        var obcontent = Cryptor.encrypt(Obfuscator(data.content));
+                        Conn.query("INSERT INTO scripts(name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?)", [name_1, content, obcontent, Owner["username"], id], function (err, results) {
                             if (err) {
                                 console.log(err);
                                 rej({ ErrCode: 500 });
                             }
                             else {
-                                console.log(results);
                                 res({
                                     Data: { id: id },
                                 });
                             }
                         });
-                        return [2 /*return*/];
-                }
+                    }
+                    else {
+                        rej({ ErrCode: 403 });
+                    }
+                })
+                    .catch(function (err) {
+                    rej({ ErrCode: 403 });
+                });
+                return [2 /*return*/];
             });
         }); });
     };
@@ -122,6 +131,10 @@ var Master = /** @class */ (function () {
                         if (results.length) {
                             var script = results[0];
                             script.content = Cryptor.decrypt(script.content);
+                            script.obfuscated_content = Cryptor.decrypt(script.obfuscated_content);
+                            if (script.private == true) {
+                                delete script.content;
+                            }
                             res({
                                 Data: script,
                             });

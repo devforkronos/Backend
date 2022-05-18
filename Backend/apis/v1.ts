@@ -21,10 +21,10 @@ Router.get("/script/get/:id", async (req, res) => {
   DB.getScriptById(req.params.id)
     .then((data) => {
       if (req.query.type == "txt") {
-        if (data.Data.obfuscate == true || req.query.obfuscate == "true") {
-          res.end(Obfuscator(data.Data.content));
-        } else {
+        if (data.Data.content) {
           res.end(data.Data.content);
+        } else {
+          res.end(data.Data.obfuscated_content);
         }
       } else {
         res.json({

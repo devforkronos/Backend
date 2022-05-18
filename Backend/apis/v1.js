@@ -62,11 +62,11 @@ Router.get("/script/get/:id", function (req, res) { return __awaiter(_this, void
         DB.getScriptById(req.params.id)
             .then(function (data) {
             if (req.query.type == "txt") {
-                if (data.Data.obfuscate == true || req.query.obfuscate == "true") {
-                    res.end(Obfuscator(data.Data.content));
+                if (data.Data.content) {
+                    res.end(data.Data.content);
                 }
                 else {
-                    res.end(data.Data.content);
+                    res.end(data.Data.obfuscated_content);
                 }
             }
             else {

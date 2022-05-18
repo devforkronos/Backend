@@ -1,5 +1,6 @@
 const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("./database/db.json");
+const Obfuscator = require("../module/obfuscator");
 const rString = require("../module/rString");
 const Cryptor = require("../module/crypt");
 const MySQL = require("mysql2");
@@ -44,23 +45,34 @@ class Master {
   createScript(token, data) {
     return new Promise(async (res, rej) => {
       let id = rString(13);
-      let Owner = await this.userByToken(token);
-      console.log(Owner);
-      Conn.query(
-        "INSERT INTO scripts(content, owner, id) VALUES(?, ?, ?)",
-        [Cryptor.encrypt(data.content), Owner["username"], id],
-        function (err, results) {
-          if (err) {
-            console.log(err);
-            rej({ ErrCode: 500 });
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            let name = data.name;
+            if (!name) rej({ ErrCode: 400 });
+            let content = Cryptor.encrypt(data.content);
+            let obcontent = Cryptor.encrypt(Obfuscator(data.content));
+            Conn.query(
+              "INSERT INTO scripts(name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?)",
+              [name, content, obcontent, Owner["username"], id],
+              function (err, results) {
+                if (err) {
+                  console.log(err);
+                  rej({ ErrCode: 500 });
+                } else {
+                  res({
+                    Data: { id: id },
+                  });
+                }
+              }
+            );
           } else {
-            console.log(results);
-            res({
-              Data: { id: id },
-            });
+            rej({ ErrCode: 403 });
           }
-        }
-      );
+        })
+        .catch((err) => {
+          rej({ ErrCode: 403 });
+        });
     });
   }
   /**
@@ -79,6 +91,12 @@ class Master {
             if (results.length) {
               let script = results[0];
               script.content = Cryptor.decrypt(script.content);
+              script.obfuscated_content = Cryptor.decrypt(
+                script.obfuscated_content
+              );
+              if (script.private == true) {
+                delete script.content;
+              }
               res({
                 Data: script,
               });
