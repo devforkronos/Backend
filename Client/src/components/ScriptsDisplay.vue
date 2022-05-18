@@ -4,7 +4,7 @@ export default {
   data() {
     return {
       color: localStorage.color,
-      scripts: null,
+      scripts: [],
     };
   },
   async created() {
@@ -12,7 +12,7 @@ export default {
       `${window.$BackendURL}/api/v1/script/owner/jub0t`
     );
     const { Data: scripts } = await response.json();
-    this.scripts = scripts;
+    this.scripts = scripts | [];
   },
 };
 </script>
@@ -23,6 +23,19 @@ export default {
       role="list"
       class="grid grid-cols-1 mt-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
     >
+      <div class="lg:col-span-2 w-full">
+        <label
+          v-if="(scripts.length || 0) <= 0"
+          class="rounded-md w-full relative border border-bray-300 p-4 flex cursor-pointer focus:outline-none"
+        >
+          <div class="ml-3 flex flex-col">
+            <span class="block text-sm text-gray-400">
+              You currently have no API keys. Click the button on Top-right to
+              create one.
+            </span>
+          </div>
+        </label>
+      </div>
       <div v-for="(item, index) in scripts">
         <li
           class="col-span-1 bg-bray-500 border-bray-300 border rounded-lg shadow-lg divide-y divide-bray-200"
