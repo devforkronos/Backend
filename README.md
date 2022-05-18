@@ -22,3 +22,7 @@
 ![Image](./preview/BlueDash.jpg)
 ![Image](./preview/BlueScript.jpg)
 ![Image](./preview/BlueTools.jpg)
+
+## License
+
+The [LICENSE](./LICENSE) applys to every aspect of this project including images, backend code & frontend code. Also, paid distribution and commercial use is strictly prohibited.
