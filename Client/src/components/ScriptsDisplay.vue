@@ -18,13 +18,25 @@ export default {
 </script>
 <template>
   <div class="px-4 mt-4">
-    <h1 class="text-gray-300 text-xl font-bold">My Script Collection</h1>
+    <div class="w-full mt-3 text-gray-300 grid-cols-2 grid">
+      <div>
+        <h2 class="text-2xl font-bold">My Scripts</h2>
+        <p :class="`text-sm text-gray-400`">Manage/edit your Roblox scripts.</p>
+      </div>
+      <div>
+        <button
+          :class="`bg-${color} float-right text-white rounded-md px-9 py-3`"
+        >
+          Publish New
+        </button>
+      </div>
+    </div>
     <ul
       role="list"
       class="grid grid-cols-1 mt-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
     >
       <div
-        class="lg:col-span-3 lg:col-span-2 w-full"
+        class="xl:col-span-3 mt-1 lg:col-span-2 w-full"
         v-if="(scripts.length || 0) <= 0"
       >
         <label

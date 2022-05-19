@@ -1,19 +1,40 @@
 <script>
 export default {
   name: "ToggleButton",
+  props: {
+    toggled: String,
+    identity: String,
+    onClick: Function,
+  },
   data() {
     return {
+      toggle(e) {
+        const button = e.target;
+        const classes = button.children[0].classList;
+        console.log(classes);
+        if (classes.contains("translate-x-0")) {
+          classes.replace("translate-x-0", "translate-x-5");
+        } else {
+          classes.replace("translate-x-5", "translate-x-0");
+        }
+      },
       color: localStorage.color,
     };
   },
-  props: {
-    data: String,
+  created() {
+    this.$emit("created");
+    console.log(this);
   },
 };
 </script>
 <template>
   <button
-    v-if="data == '0'"
+    :id="identity"
+    @click="
+      onClick();
+      toggle($event);
+    "
+    v-if="toggled == false || toggled == 'false'"
     type="button"
     class="bg-bray-400 float-right relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
     role="switch"
@@ -54,7 +75,12 @@ export default {
   </button>
 
   <button
-    v-if="data == '1'"
+    :id="identity"
+    @click="
+      onClick();
+      toggle($event);
+    "
+    v-if="toggled == true || toggled == 'true'"
     type="button"
     class="bg-bray-400 float-right relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
     role="switch"

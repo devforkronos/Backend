@@ -23,11 +23,17 @@ function index() {
     "/tools": {
       component: "ToolsComponent",
     },
+    "/scripts/new": {
+      component: "NewScriptComponent",
+    },
     "/manage-script": {
       component: "ManageComponent",
     },
     "/tools/hub": {
       component: "ScriptHubComponent",
+    },
+    "/tools/obfuscator": {
+      component: "ObfuscatorComponent",
     },
   };
   if (localStorage.token) {
@@ -92,6 +98,7 @@ settings.</small>
     }
     document.getElementById("AuthComponent").style.display = "";
   }
+
 }
 
 export default index;

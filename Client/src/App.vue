@@ -9,19 +9,23 @@ import SHub from "./page/SHub.vue";
 import Manage from "./page/Manage.vue";
 import Docs from "./page/Docs.vue";
 import NotFound from "./page/404.vue";
+import NewScript from "./page/NewScript.vue";
+import Obfuscator from "./page/Obfuscator.vue";
 </script>
 
 <template>
+  <Tools />
   <Welcome />
   <Home />
   <Auth />
   <APIs />
-  <Tools />
   <SHub />
   <Scripts />
   <Manage />
   <Docs />
   <NotFound />
+  <NewScript />
+  <Obfuscator />
 </template>
 
 <style>
