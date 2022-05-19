@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS `apis` (
   `owner` text NOT NULL,
   `created` bigint(20) NOT NULL,
   `id` varchar(255) NOT NULL,
-  `description` text NOT NULL DEFAULT 'This API has no description.',
+  `description` text NOT NULL,
   `name` text NOT NULL
 )
