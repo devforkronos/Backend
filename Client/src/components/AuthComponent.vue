@@ -1,7 +1,9 @@
 <script>
+let Query = new URLSearchParams(window.location.search);
 import ColorThemeBox from "./ColorThemeBox.vue";
 import SidebarNavs from "./SidebarNavs.vue";
 import HeaderSearchbox from "./HeaderSearchbox.vue";
+
 export default {
   name: "DashboardComponent",
   components: {
@@ -11,9 +13,46 @@ export default {
   },
   data() {
     return {
+      errorDisplay(error) {
+        this.errorMessage = error;
+      },
+      login() {
+        fetch(`${window.$BackendURL}/api/v1/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: {
+              username: document.getElementById("username").value,
+              password: document.getElementById("password").value,
+            },
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.Success) {
+              if (data.Data) {
+                if (data.Data.token) {
+                  localStorage.setItem("token", data.Data.token);
+                  setTimeout(() => {
+                    window.localtion.reload();
+                  }, 250);
+                } else {
+                  localStorage.removeItem("token");
+                }
+              }
+            } else {
+              this.errorDisplay(data.DisplayMessage);
+            }
+          });
+      },
+
+      errorMessage: null,
       color: localStorage.color,
     };
   },
+  created() {},
 };
 </script>
 <template>
@@ -109,10 +148,35 @@ export default {
       </div>
       <div class="min-h-full flex flex-col justify-center sm:px-6 lg:px-8">
         <div class="mt-8 sm:mx-auto mt-16 sm:w-full sm:max-w-md">
+          <div class="bg-bray-500 shadow sm:rounded-lg">
+            <div
+              v-if="errorMessage"
+              class="p-4 flex space-x-2 text-gray-300 text-sm border-bray-300 border rounded-md"
+            >
+              <h1>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  :class="`h-5 w-5 text-${color}`"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01"
+                  />
+                </svg>
+              </h1>
+              <h1>{{ errorMessage }}</h1>
+            </div>
+          </div>
+
           <div
-            class="bg-bray-500 border-bray-300 border py-8 px-4 shadow sm:rounded-lg sm:px-10"
+            class="bg-bray-500 mt-5 border-bray-300 border py-8 px-4 shadow sm:rounded-lg sm:px-10"
           >
-            <form class="space-y-6" action="#" method="POST">
+            <div class="space-y-6" action="#" method="POST">
               <div>
                 <label
                   for="email"
@@ -122,10 +186,9 @@ export default {
                 </label>
                 <div class="mt-1">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
+                    id="username"
+                    type="username"
+                    autocomplete="username"
                     required
                     placeholder="John Doe"
                     class="appearance-none block w-full bg-bray-500 px-3 py-2 border text-gray-300 border-bray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm"
@@ -148,20 +211,20 @@ export default {
                     placeholder="**********"
                     autocomplete="current-password"
                     required
-                    class="appearance-none block w-full bg-bray-500 px-3 py-2 border border-bray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm"
+                    class="appearance-none block w-full bg-bray-500 px-3 py-2 border text-gray-300 border-bray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm"
                   />
                 </div>
               </div>
 
               <div>
                 <button
-                  type="submit"
+                  @click="login()"
                   :class="`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-${color} focus:outline-none`"
                 >
                   Sign in
                 </button>
               </div>
-            </form>
+            </div>
 
             <div class="hidden mt-6">
               <div class="relative">

@@ -43,9 +43,114 @@ class Master {
     });
   }
   /**
+   * Create a new user
+   */
+  createUser(data: object) {
+    return new Promise(async (res, rej) => {
+      if (!data["username"] || !data["password"]) rej({ ErrCode: 400 });
+      let prexists = await this.userByUsername(data["username"]).then(
+        (data) => {
+          return data["Data"].username || undefined;
+        }
+      );
+      if (!prexists) {
+        let token: String = rString(125);
+        let hash: string = await Cryptor.hash(data["password"])
+          .then((hash) => {
+            return hash;
+          })
+          .catch((err) => {
+            Cooler.red(err);
+            return undefined;
+          });
+        Conn.query(
+          "INSERT INTO users(username, password, token, created) VALUES(?, ?, ?, ?)",
+          [data["username"], hash, token, new Date().getTime()],
+          function (err, results) {
+            if (err) {
+              console.log(err);
+              rej({ ErrCode: 500 });
+            } else {
+              res({ Success: true, Data: { token: token } });
+            }
+          }
+        );
+      } else {
+        rej({
+          ErrCode: 409,
+          DisplayMessage: "An account with this username already exists",
+        });
+      }
+    });
+  }
+  /**
+   * Get a user by login credentials
+   */
+  getUser(username: string, password: string) {
+    return new Promise(async (res, rej) => {
+      if (!username || !password) rej({ ErrCode: 400 });
+      let user = await this.userByUsername(username)
+        .then((data) => {
+          return data["Data"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
+      if (user) {
+        let passwowrdCorrect: string = await Cryptor.matchHash(
+          password,
+          user["password"]
+        )
+          .then((hash) => {
+            return hash;
+          })
+          .catch((err) => {
+            Cooler.red(err);
+            return undefined;
+          });
+
+        if (passwowrdCorrect) {
+          res({ Data: { token: user.token, username: user.username } });
+        } else {
+          rej({
+            ErrCode: 401,
+            DisplayMessage: "The password you entered was invalid",
+          });
+        }
+      } else {
+        rej({
+          ErrCode: 404,
+          DisplayMessage: "No account with this username exists",
+        });
+      }
+    });
+  }
+  /**
+   * Get a user's data by a username.
+   */
+  async userByUsername(username: string) {
+    return new Promise((res, rej) => {
+      Conn.query(
+        "SELECT * FROM users WHERE LOWER(username) = ?",
+        [username.toLowerCase()],
+        function (error, results) {
+          if (error) {
+            rej({ ErrCode: 500 });
+          } else {
+            if (results.length > 0) {
+              res({ Data: results[0] });
+            } else {
+              rej({ ErrCode: 403 });
+            }
+          }
+        }
+      );
+    });
+  }
+  /**
    * Get a user's data by a valid token.
    */
-  async userByToken(token) {
+  async userByToken(token: string) {
     return new Promise((res, rej) => {
       Conn.query(
         "SELECT * FROM users WHERE token = ?",
@@ -67,22 +172,22 @@ class Master {
   /**
    * Add new script to database
    */
-  createScript(token, data) {
+  createScript(token: string, data: object) {
     return new Promise(async (res, rej) => {
       let id = rString(13);
       this.userByToken(token)
         .then((Owner) => {
           if (Owner) {
-            let name = data.name;
+            let name = data["name"];
             if (!name) rej({ ErrCode: 400 });
-            let content = Cryptor.encrypt(data.content);
-            let obcontent = Cryptor.encrypt(Obfuscator(data.content));
+            let content = Cryptor.encrypt(data["content"]);
+            let obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
             Conn.query(
               "INSERT INTO scripts(name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?)",
               [name, content, obcontent, Owner["username"], id],
               function (err, results) {
                 if (err) {
-                  console.log(err);
+                  Cooler.red(err);
                   rej({ ErrCode: 500 });
                 } else {
                   res({
@@ -103,7 +208,7 @@ class Master {
   /**
    * Get script from database
    */
-  getScriptById(id) {
+  getScriptById(id: String | Number) {
     return new Promise(async (res, rej) => {
       Conn.query(
         "SELECT * FROM scripts WHERE id = ?",
@@ -136,7 +241,7 @@ class Master {
   /**
    * Get user's scripts by username, private script contetn is removed
    */
-  getScriptsByUser(owner) {
+  getScriptsByUser(owner: string) {
     return new Promise(async (res, rej) => {
       Conn.query(
         "SELECT * FROM scripts WHERE LOWER(owner) = ?",
@@ -166,7 +271,7 @@ class Master {
   /**
    * Get user's APIs by token.
    */
-  getAPIsByToken(token) {
+  getAPIsByToken(token: string) {
     return new Promise(async (res, rej) => {
       this.userByToken(token)
         .then((Owner) => {
@@ -194,7 +299,7 @@ class Master {
   /**
    * Get user's APIs by token. Never send back this data to client as response
    */
-  getAPIsByUsername(username) {
+  getAPIsByUsername(username: string) {
     return new Promise(async (res, rej) => {
       Conn.query(
         "SELECT * FROM apis WHERE owner = ?",

@@ -40,6 +40,14 @@ var Routes = require("../config/routes.json");
 var Cryptor = require("../module/crypt");
 var Router = require("express").Router();
 var DB = require("../sql/index");
+Router.get("/", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            res.json({ Success: true });
+            return [2 /*return*/];
+        });
+    });
+});
 Router.post("/me", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -52,6 +60,50 @@ Router.post("/me", function (req, res) {
             })
                 .catch(function (err) {
                 res.json(Routes.errors["".concat(err.ErrCode)]);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
+Router.post("/login", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (!req.body.data)
+                return [2 /*return*/, res.json(Routes.errors["400"])];
+            DB.getUser(req.body.data.username, req.body.data.password)
+                .then(function (data) {
+                res.json({
+                    Success: true,
+                    Data: data.Data,
+                });
+            })
+                .catch(function (err) {
+                var resp = Routes.errors["".concat(err.ErrCode)];
+                if (err.DisplayMessage) {
+                    resp["DisplayMessage"] = err.DisplayMessage;
+                }
+                res.json(resp);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
+Router.post("/register", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            DB.createUser(req.body.data)
+                .then(function (data) {
+                res.json({
+                    Success: true,
+                    Data: data.Data,
+                });
+            })
+                .catch(function (err) {
+                var resp = Routes.errors["".concat(err.ErrCode)];
+                if (err.DisplayMessage) {
+                    resp["DisplayMessage"] = err.DisplayMessage;
+                }
+                res.json(resp);
             });
             return [2 /*return*/];
         });

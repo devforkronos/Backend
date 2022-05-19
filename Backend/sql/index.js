@@ -68,6 +68,133 @@ var Master = /** @class */ (function () {
         });
     }
     /**
+     * Create a new user
+     */
+    Master.prototype.createUser = function (data) {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            var prexists, token_1, hash;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!data["username"] || !data["password"])
+                            rej({ ErrCode: 400 });
+                        return [4 /*yield*/, this.userByUsername(data["username"]).then(function (data) {
+                                return data["Data"].username || undefined;
+                            })];
+                    case 1:
+                        prexists = _a.sent();
+                        if (!!prexists) return [3 /*break*/, 3];
+                        token_1 = rString(125);
+                        return [4 /*yield*/, Cryptor.hash(data["password"])
+                                .then(function (hash) {
+                                return hash;
+                            })
+                                .catch(function (err) {
+                                Cooler.red(err);
+                                return undefined;
+                            })];
+                    case 2:
+                        hash = _a.sent();
+                        Conn.query("INSERT INTO users(username, password, token, created) VALUES(?, ?, ?, ?)", [data["username"], hash, token_1, new Date().getTime()], function (err, results) {
+                            if (err) {
+                                console.log(err);
+                                rej({ ErrCode: 500 });
+                            }
+                            else {
+                                res({ Success: true, Data: { token: token_1 } });
+                            }
+                        });
+                        return [3 /*break*/, 4];
+                    case 3:
+                        rej({
+                            ErrCode: 409,
+                            DisplayMessage: "An account with this username already exists",
+                        });
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+    };
+    /**
+     * Get a user by login credentials
+     */
+    Master.prototype.getUser = function (username, password) {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            var user, passwowrdCorrect;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!username || !password)
+                            rej({ ErrCode: 400 });
+                        return [4 /*yield*/, this.userByUsername(username)
+                                .then(function (data) {
+                                return data["Data"];
+                            })
+                                .catch(function (err) {
+                                return undefined;
+                            })];
+                    case 1:
+                        user = _a.sent();
+                        if (!user) return [3 /*break*/, 3];
+                        return [4 /*yield*/, Cryptor.matchHash(password, user["password"])
+                                .then(function (hash) {
+                                return hash;
+                            })
+                                .catch(function (err) {
+                                Cooler.red(err);
+                                return undefined;
+                            })];
+                    case 2:
+                        passwowrdCorrect = _a.sent();
+                        if (passwowrdCorrect) {
+                            res({ Data: { token: user.token, username: user.username } });
+                        }
+                        else {
+                            rej({
+                                ErrCode: 401,
+                                DisplayMessage: "The password you entered was invalid",
+                            });
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        rej({
+                            ErrCode: 404,
+                            DisplayMessage: "No account with this username exists",
+                        });
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+    };
+    /**
+     * Get a user's data by a username.
+     */
+    Master.prototype.userByUsername = function (username) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (res, rej) {
+                        Conn.query("SELECT * FROM users WHERE LOWER(username) = ?", [username.toLowerCase()], function (error, results) {
+                            if (error) {
+                                rej({ ErrCode: 500 });
+                            }
+                            else {
+                                if (results.length > 0) {
+                                    res({ Data: results[0] });
+                                }
+                                else {
+                                    rej({ ErrCode: 403 });
+                                }
+                            }
+                        });
+                    })];
+            });
+        });
+    };
+    /**
      * Get a user's data by a valid token.
      */
     Master.prototype.userByToken = function (token) {
@@ -103,14 +230,14 @@ var Master = /** @class */ (function () {
                 this.userByToken(token)
                     .then(function (Owner) {
                     if (Owner) {
-                        var name_1 = data.name;
+                        var name_1 = data["name"];
                         if (!name_1)
                             rej({ ErrCode: 400 });
-                        var content = Cryptor.encrypt(data.content);
-                        var obcontent = Cryptor.encrypt(Obfuscator(data.content));
+                        var content = Cryptor.encrypt(data["content"]);
+                        var obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
                         Conn.query("INSERT INTO scripts(name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?)", [name_1, content, obcontent, Owner["username"], id], function (err, results) {
                             if (err) {
-                                console.log(err);
+                                Cooler.red(err);
                                 rej({ ErrCode: 500 });
                             }
                             else {

@@ -19,6 +19,16 @@
       "Success": false,
       "Message": "Invalid Credentials - Forbidden",
       "ErrCode": "403"
+    },
+    "409": {
+      "Success": false,
+      "Message": "Already Exists - Conflict",
+      "ErrCode": "409"
+    },
+    "401": {
+      "Success": false,
+      "Message": "Unauthorized",
+      "ErrCode": "401"
     }
   }
 }
