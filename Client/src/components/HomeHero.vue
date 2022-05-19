@@ -30,7 +30,7 @@ export default {
             </a>
             <a
               href="/explore"
-              class="px-8 py-3 m-2 cubano text-lg text-gray-50 border rounded border-gray-300"
+              class="px-8 hidden py-3 m-2 cubano text-lg text-gray-50 border rounded border-gray-300"
               >Explore</a
             >
           </div>
