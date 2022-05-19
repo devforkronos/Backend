@@ -22,7 +22,7 @@ rm -r /var/www/BloxSafe
 mv ./BloxSafe/Client /var/www/BloxSafe
 cd /var/www/BloxSafe && npm install && npm run build
 
-cd ./BloxSafe/Backend
+cd /root/nodejs/BloxSafe/Backend
 npm install
 mv .env.test .env
 
@@ -34,6 +34,7 @@ nginx
 Once you run this shell script you will have two new directories, `/var/www/BloxSafe` for frontend and `/root/nodejs/BloxSafe` for backend. The frontend will run via the script but to start the backend you will have to follow the following steps.
 
 ```shell
+cd /root/nodejs/BloxSafe/Backend
 nano .env ## Open the .env file to edit(linux)
 ```
 
