@@ -58,7 +58,7 @@ class Master {
         });
       if (!prexists) {
         let token: String = rString(125);
-        let hash: string = await Cryptor.hash(data["password"])
+        let hash: String = await Cryptor.hash(data["password"])
           .then((hash) => {
             return hash;
           })
@@ -89,7 +89,7 @@ class Master {
   /**
    * Get a user by login credentials
    */
-  getUser(username: string, password: string) {
+  getUser(username: String, password: String) {
     return new Promise(async (res, rej) => {
       if (!username || !password) rej({ ErrCode: 400 });
       let user = await this.userByUsername(username)
@@ -100,7 +100,7 @@ class Master {
           return undefined;
         });
       if (user) {
-        let passwowrdCorrect: string = await Cryptor.matchHash(
+        let passwowrdCorrect: String = await Cryptor.matchHash(
           password,
           user["password"]
         )
@@ -131,7 +131,7 @@ class Master {
   /**
    * Get a user's data by a username.
    */
-  async userByUsername(username: string) {
+  async userByUsername(username: String) {
     return new Promise((res, rej) => {
       Conn.query(
         "SELECT * FROM users WHERE LOWER(username) = ?",
@@ -153,7 +153,7 @@ class Master {
   /**
    * Get a user's data by a valid token.
    */
-  async userByToken(token: string) {
+  async userByToken(token: String) {
     return new Promise((res, rej) => {
       Conn.query(
         "SELECT * FROM users WHERE token = ?",
@@ -175,7 +175,7 @@ class Master {
   /**
    * Add new script to database
    */
-  createScript(token: string, data: object) {
+  createScript(token: String, data: object) {
     return new Promise(async (res, rej) => {
       let id = rString(13);
       this.userByToken(token)
@@ -244,7 +244,7 @@ class Master {
   /**
    * Get user's scripts by username, private script contetn is removed
    */
-  getScriptsByUser(owner: string) {
+  getScriptsByUser(owner: String) {
     return new Promise(async (res, rej) => {
       Conn.query(
         "SELECT * FROM scripts WHERE LOWER(owner) = ?",
@@ -271,10 +271,32 @@ class Master {
       );
     });
   }
+  getScriptsByToken(token: String) {
+    return new Promise(async (res, rej) => {
+      let username: String = await this.userByToken(token)
+        .then((data) => {
+          return data["username"] || undefined;
+        })
+        .catch((err) => {
+          return undefined;
+        });
+      if (username) {
+        this.getScriptsByUser(username)
+          .then((data) => {
+            res({ Data: data["Data"] });
+          })
+          .catch((err) => {
+            rej({ ErrCode: 404 });
+          });
+      } else {
+        rej({ ErrCode: 403 });
+      }
+    });
+  }
   /**
    * Get user's APIs by token.
    */
-  getAPIsByToken(token: string) {
+  getAPIsByToken(token: String) {
     return new Promise(async (res, rej) => {
       this.userByToken(token)
         .then((Owner) => {
@@ -302,7 +324,7 @@ class Master {
   /**
    * Get user's APIs by token. Never send back this data to client as response
    */
-  getAPIsByUsername(username: string) {
+  getAPIsByUsername(username: String) {
     return new Promise(async (res, rej) => {
       Conn.query(
         "SELECT * FROM apis WHERE owner = ?",

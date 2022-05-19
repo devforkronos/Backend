@@ -18,7 +18,7 @@ export default {
       </h1>
     </div>
     <div>
-      <div class="">
+      <div class="hidden">
         <a class="float-right px-2">
           <span>Search</span>
         </a>

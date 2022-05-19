@@ -328,6 +328,38 @@ var Master = /** @class */ (function () {
             });
         }); });
     };
+    Master.prototype.getScriptsByToken = function (token) {
+        var _this = this;
+        return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+            var username;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.userByToken(token)
+                            .then(function (data) {
+                            return data["username"] || undefined;
+                        })
+                            .catch(function (err) {
+                            return undefined;
+                        })];
+                    case 1:
+                        username = _a.sent();
+                        if (username) {
+                            this.getScriptsByUser(username)
+                                .then(function (data) {
+                                res({ Data: data["Data"] });
+                            })
+                                .catch(function (err) {
+                                rej({ ErrCode: 404 });
+                            });
+                        }
+                        else {
+                            rej({ ErrCode: 403 });
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    };
     /**
      * Get user's APIs by token.
      */

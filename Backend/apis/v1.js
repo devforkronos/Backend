@@ -109,6 +109,23 @@ Router.post("/register", function (req, res) {
         });
     });
 });
+Router.post("/scripts/me", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            DB.getScriptsByToken(req.body.token)
+                .then(function (data) {
+                res.json({
+                    Success: true,
+                    Data: data.Data,
+                });
+            })
+                .catch(function (err) {
+                res.json(Routes.errors["".concat(err.ErrCode)]);
+            });
+            return [2 /*return*/];
+        });
+    });
+});
 Router.get("/script/get/:id", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         DB.getScriptById(req.params.id)

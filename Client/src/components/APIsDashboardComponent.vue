@@ -25,46 +25,6 @@ export default {
 <template>
   <div class="w-full">
     <div
-      class="fixed inset-0 flex z-40 md:hidden"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        class="fixed inset-0 bg-bray-500 bg-opacity-75"
-        aria-hidden="true"
-      ></div>
-
-      <div
-        class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-bray-500"
-      >
-        <div class="absolute top-0 right-0 -mr-12 pt-2">
-          <button
-            type="button"
-            class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-          >
-            <svg
-              class="h-6 w-6 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="flex-shrink-0 w-14" aria-hidden="true"></div>
-    </div>
-
-    <div
       class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border border-bray-300"
     >
       <div class="flex-1 flex flex-col min-h-0 bg-bray-500">
@@ -87,7 +47,7 @@ export default {
       >
         <button
           type="button"
-          class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+          class="px-4 border-r border-bray-300 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
         >
           <span class="sr-only">Open sidebar</span>
 

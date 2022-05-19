@@ -1,9 +1,9 @@
 <script>
 let Query = new URLSearchParams(window.location.search);
+import ToggleButton from "./ToggleButton.vue";
 import SidebarNavs from "./SidebarNavs.vue";
 import ColorThemeBox from "./ColorThemeBox.vue";
 import HeaderSearchbox from "./HeaderSearchbox.vue";
-import ToggleButton from "./ToggleButton.vue";
 export default {
   name: "DashboardComponent",
   components: {
@@ -14,22 +14,25 @@ export default {
   },
   data() {
     return {
+      toggleNewScriptPrivate() {
+        if (
+          localStorage.new_script_private == true ||
+          localStorage.new_script_private == "true"
+        ) {
+          localStorage.setItem("new_script_private", false);
+        } else {
+          localStorage.setItem("new_script_private", true);
+        }
+      },
       script: {},
+      localStorage: localStorage,
+      new_script_private: localStorage.new_script_private,
       color: localStorage.color,
     };
   },
   async created() {
-    let id = Query.get("id");
-    if (id) {
-      const response = await fetch(
-        `${window.$BackendURL}/api/v1/script/get/${id}`
-      );
-      const { Data: script } = await response.json();
-      this.script = script || {};
-      if (!script.content) {
-        script.content = script.obfuscated_content;
-      }
-    }
+    if (!localStorage.new_script_private)
+      localStorage.new_script_private = false;
   },
 };
 </script>
@@ -85,24 +88,42 @@ export default {
         </div>
       </div>
       <div class="px-4 py-4">
-        <textarea
+        <div class="grid text-gray-300 items-center flex w-full grid-cols-2">
+          <div>Private</div>
+          <div class="w-full float-right">
+            <ToggleButton
+              :toggled="new_script_private"
+              :onClick="toggleNewScriptPrivate"
+            />
+          </div>
+        </div>
+
+        <input
           placeholder="Enter script name here"
-          v-model="script.content"
-          :class="`scrollbar-thin py-1 scrollbar-thumb-${color} scrollbar-track-bray-400 overflow-y-scroll rounded text-gray-400 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
-        >
-        </textarea>
-        <textarea
+          v-model="localStorage.new_script_name"
+          :class="`scrollbar-thin py-3 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-400 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
+        />
+        <input
           placeholder="Enter script description"
-          v-model="script.content"
-          :class="`scrollbar-thin py-1 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-400 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
-        >
-        </textarea>
+          v-model="localStorage.new_script_description"
+          :class="`scrollbar-thin py-3 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-400 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
+        />
         <textarea
           placeholder="Paste your script code here"
-          v-model="script.content"
+          v-model="localStorage.new_script_code"
           :class="`scrollbar-thin scrollbar-thumb-${color} scrollbar-track-bray-400 overflow-y-scroll rounded text-gray-400 h-screen text-sm bg-bray-500 border border-bray-300 resize-none w-full mt-3 focus:outline-none px-3 py-3`"
         >
         </textarea>
+        <div class="grid-cols-1 grid mt-1">
+          <h1 class="text-gray-200 font-bold text-3xl">
+            <span>{{ script["name"] || "" }}</span>
+          </h1>
+          <button
+            :class="`bg-${color} float-right text-white rounded-md px-9 py-3`"
+          >
+            Publish
+          </button>
+        </div>
       </div>
       <!-- Content -->
     </div>

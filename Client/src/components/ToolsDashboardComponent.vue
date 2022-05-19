@@ -45,7 +45,7 @@ export default {
       >
         <button
           type="button"
-          class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+          class="px-4 border-r border-bray-300 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
         >
           <span class="sr-only">Open sidebar</span>
 

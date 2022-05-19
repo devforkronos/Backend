@@ -56,6 +56,19 @@ Router.post("/register", async function (req, res) {
     });
 });
 
+Router.post("/scripts/me", async function (req, res) {
+  DB.getScriptsByToken(req.body.token)
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
 Router.get("/script/get/:id", async (req, res) => {
   DB.getScriptById(req.params.id)
     .then((data) => {

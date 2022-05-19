@@ -8,11 +8,16 @@ export default {
     };
   },
   async created() {
-    const response = await fetch(
-      `${window.$BackendURL}/api/v1/script/owner/jub0t`
-    );
-    const { Data: scripts } = await response.json();
-    this.scripts = scripts || [];
+    const response = await fetch(`${window.$BackendURL}/api/v1/scripts/me`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: localStorage.token }),
+    });
+    var { Data: scripts } = await response.json();
+    this.scripts = scripts;
+    if (!scripts) {
+      this.scripts = [];
+    }
   },
 };
 </script>

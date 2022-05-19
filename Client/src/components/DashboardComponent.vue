@@ -45,7 +45,7 @@ export default {
       >
         <button
           type="button"
-          class="px-4 border-r border-bray-300 text-gray-500 focus:outline-none hover:text-white"
+          class="px-4 border-r border-bray-300 text-gray-500 focus:outline-none hover:text-white md:hidden"
         >
           <svg
             class="h-6 w-6"
