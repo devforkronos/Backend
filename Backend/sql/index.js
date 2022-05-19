@@ -79,8 +79,13 @@ var Master = /** @class */ (function () {
                     case 0:
                         if (!data["username"] || !data["password"])
                             rej({ ErrCode: 400 });
-                        return [4 /*yield*/, this.userByUsername(data["username"]).then(function (data) {
+                        return [4 /*yield*/, this.userByUsername(data["username"])
+                                .then(function (data) {
                                 return data["Data"].username || undefined;
+                            })
+                                .catch(function (err) {
+                                Cooler.red(err);
+                                return undefined;
                             })];
                     case 1:
                         prexists = _a.sent();

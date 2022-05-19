@@ -48,11 +48,14 @@ class Master {
   createUser(data: object) {
     return new Promise(async (res, rej) => {
       if (!data["username"] || !data["password"]) rej({ ErrCode: 400 });
-      let prexists = await this.userByUsername(data["username"]).then(
-        (data) => {
+      let prexists = await this.userByUsername(data["username"])
+        .then((data) => {
           return data["Data"].username || undefined;
-        }
-      );
+        })
+        .catch((err) => {
+          Cooler.red(err);
+          return undefined;
+        });
       if (!prexists) {
         let token: String = rString(125);
         let hash: string = await Cryptor.hash(data["password"])
