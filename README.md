@@ -1,6 +1,6 @@
 # BloxSafe
 
-🚀 Dashboard to manage your Roblos scripts.
+🚀 Dashboard to manage your Roblos scripts. Live preview on [bs.jubot.site/](bs.jubot.site/). Username: `demo`, Password: `demo`
 
 ## Features
 

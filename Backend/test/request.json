@@ -1,10 +1,10 @@
 {
-  "token": "ABC",
-  "code": "print('Hello Jareer')",
+  "token": "test",
+  "code": "print('BloxSafe Injected')",
   "data": {
-    "username": "JUB0T",
-    "password": "Bob123",
     "name": "test",
-    "content": "print('Hello This is My String')"
+    "username": "demo",
+    "password": "demo",
+    "content": "print('BloxSafe Injected')"
   }
 }
