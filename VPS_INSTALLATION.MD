@@ -33,10 +33,15 @@ Once you run this shell script you will have two new directories, `/var/www/Blox
 nano .env ## Open the .env file to edit(linux)
 ```
 
-Once you are in the `.env` file, configure the settings. Add mysql credentials add an encryption key etc.
+Once you are in the `.env` file, configure the settings. Add mysql credentials add an encryption key etc. Then start the backend server by the commands below. You can use npm packages like [PM2](https://www.npmjs.com/package/pm2) or [Forever](https://www.npmjs.com/package/forever) to run the backend 24/7, for demonstration purposes I'll use forever(recommended).
 
 ```shell
-## Basic
+## Install the package globally
+npm install forever -g
+```
+
+```shell
+## Basic Start
 node /root/nodejs/BloxSafe
 ## With forever
 forever start /root/nodejs/BloxSafe/index.js
