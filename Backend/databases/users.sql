@@ -1,6 +1,9 @@
 CREATE TABLE IF NOT EXISTS `users` (
-  `username` text NOT NULL,
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `id` bigint(20) AUTO_INCREMENT,
   `token` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `password` text NOT NULL,
+  `created` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
 )
