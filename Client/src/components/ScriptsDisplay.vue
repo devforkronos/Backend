@@ -24,11 +24,12 @@ export default {
         <p :class="`text-sm text-gray-400`">Manage/edit your Roblox scripts.</p>
       </div>
       <div>
-        <button
+        <a
+          href="/scripts/new"
           :class="`bg-${color} float-right text-white rounded-md px-9 py-3`"
         >
           Publish New
-        </button>
+        </a>
       </div>
     </div>
     <ul
@@ -49,7 +50,7 @@ export default {
           </div>
         </label>
       </div>
-      <div v-for="(item, index) in scripts">
+      <div v-for="item in scripts" :key="item">
         <li
           class="col-span-1 bg-bray-500 border-bray-300 border rounded-lg shadow-lg divide-y divide-bray-200"
         >

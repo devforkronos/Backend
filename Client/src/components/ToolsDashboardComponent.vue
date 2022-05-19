@@ -1,7 +1,6 @@
 <script>
 import SidebarNavs from "./SidebarNavs.vue";
 import ColorThemeBox from "./ColorThemeBox.vue";
-import ScriptsDisplay from "./ScriptsDisplay.vue";
 import DashboardStats from "./DashboardStats.vue";
 import HeaderSearchbox from "./HeaderSearchbox.vue";
 import ToolsDisplay from "./ToolsDisplay.vue";

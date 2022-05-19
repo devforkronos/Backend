@@ -22,7 +22,6 @@ export default {
         <a class="float-right px-2">
           <span>Search</span>
         </a>
-        {{ BackgroundSVG }}
         <a class="float-right px-2">
           <span>Scripts</span>
         </a>

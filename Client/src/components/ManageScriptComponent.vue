@@ -1,5 +1,7 @@
 <script>
 let Query = new URLSearchParams(window.location.search);
+import toggleScriptObfuscate from "@/assets/toggleScriptObfuscate.js";
+import toggleScriptPrivacy from "@/assets/toggleScriptPrivacy.js";
 import SidebarNavs from "./SidebarNavs.vue";
 import ColorThemeBox from "./ColorThemeBox.vue";
 import HeaderSearchbox from "./HeaderSearchbox.vue";
@@ -16,6 +18,8 @@ export default {
     return {
       script: {},
       color: localStorage.color,
+      toggleScriptPrivacy: toggleScriptPrivacy,
+      toggleScriptObfuscate: toggleScriptObfuscate,
     };
   },
   async created() {
@@ -143,13 +147,19 @@ export default {
           <div class="grid text-gray-300 items-center flex w-full grid-cols-2">
             <div>Obfuscation</div>
             <div class="w-full float-right">
-              <ToggleButton :data="script.obfuscate" />
+              <ToggleButton
+                :toggled="script.obfuscate == '1' ? true : false"
+                :onClick="toggleScriptObfuscate"
+              />
             </div>
           </div>
           <div class="grid text-gray-300 items-center flex w-full grid-cols-2">
             <div>Private(Key system)</div>
             <div class="w-full float-right">
-              <ToggleButton :data="script.private" />
+              <ToggleButton
+                :toggled="script.private == '1' ? true : false"
+                :onClick="toggleScriptPrivacy"
+              />
             </div>
           </div>
         </div>
