@@ -15,6 +15,7 @@
 
 - **[Frontend Installation](/Client/README.md)**
 - **[Backend Installation](/Backend/README.md)**
+- **[VPS Installation](/VPS_INSTALLATION.MD)**
 
 ## Preview
 
