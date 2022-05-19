@@ -11,10 +11,10 @@
 - Key System
 - Discord Webhook Integration
 
-## Installtion
+## Installation
 
 - **[Frontend Installation](/Client/README.md)**
-- **[Backend Installation](/Backend/README.md)**
+- **[Backend Installation](/Backend/README.MD)**
 - **[VPS Installation(recommended)](/VPS_INSTALLATION.MD)**
 
 ## Preview
