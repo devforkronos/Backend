@@ -107,23 +107,154 @@ export default {
           <div class="flex-1 flex">
             <HeaderSearchbox />
           </div>
-          <div class="ml-4 flex items-center md:ml-6">
-            <div class="ml-3 relative">
+        </div>
+      </div>
+      <!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+      <!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full bg-gray-50">
+  <body class="h-full">
+  ```
+-->
+      <div class="min-h-full flex flex-col justify-center sm:px-6 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
+        </div>
+
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <div
+            class="bg-bray-500 border-bray-300 border py-8 px-4 shadow sm:rounded-lg sm:px-10"
+          >
+            <form class="space-y-6" action="#" method="POST">
+              <div>
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-gray-400"
+                >
+                  Email address
+                </label>
+                <div class="mt-1">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                    class="appearance-none block w-full bg-bray-500 px-3 py-2 border border-bray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="password"
+                  class="block text-sm font-medium text-gray-400"
+                >
+                  Password
+                </label>
+                <div class="mt-1">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                    class="appearance-none block w-full bg-bray-500 px-3 py-2 border border-bray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm"
+                  />
+                </div>
+              </div>
+
               <div>
                 <button
-                  type="button"
-                  class="max-w-xs bg-bray-500 flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  id="user-menu-button"
-                  aria-expanded="false"
-                  aria-haspopup="true"
+                  type="submit"
+                  :class="`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-${color} focus:outline-none`"
                 >
-                  <span class="sr-only">Open user menu</span>
-                  <img
-                    class="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
+                  Sign in
                 </button>
+              </div>
+            </form>
+
+            <div class="mt-6">
+              <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-bray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span
+                    class="px-2 bg-bray-500 border-bray-300 border text-gray-500"
+                  >
+                    Or
+                  </span>
+                </div>
+              </div>
+
+              <div class="mt-6 grid grid-cols-2 gap-3">
+                <div>
+                  <a
+                    href=""
+                    class="w-full space-x-2 inline-flex py-2 px-4 border border-bray-300 rounded-md shadow-sm bg-bray-500 border-bray-300 border text-sm font-medium text-gray-500 hover:bg-bray-400"
+                  >
+                    <span class="sr-only">Sign in with Twitter</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span>Community</span>
+                  </a>
+                </div>
+
+                <div>
+                  <a
+                    href=""
+                    class="w-full space-x-2 inline-flex py-2 px-4 border border-bray-300 rounded-md shadow-sm bg-bray-500 border-bray-300 border text-sm font-medium text-gray-500 hover:bg-bray-400"
+                  >
+                    <span class="sr-only">Sign in with Twitter</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span>Community</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

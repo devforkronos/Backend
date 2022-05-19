@@ -35,7 +35,7 @@ export default {
       </div>
       <div class="mt-8">
         <h3 class="text-lg font-medium">
-          <a href="#" class="text-gray-300 focus:outline-none">
+          <a href="/tools/obfuscator" class="text-gray-300 focus:outline-none">
             <!-- Extend touch target to entire panel -->
             <span class="absolute inset-0" aria-hidden="true"></span>
             Obfuscate Script
@@ -77,7 +77,7 @@ export default {
       </div>
       <div class="mt-8">
         <h3 class="text-lg font-medium">
-          <a href="#" class="text-gray-300 focus:outline-none">
+          <a href="/tools/webhook" class="text-gray-300 focus:outline-none">
             <span class="absolute inset-0" aria-hidden="true"></span>
             Discord Webhook
           </a>
@@ -117,7 +117,7 @@ export default {
       </div>
       <div class="mt-8">
         <h3 class="text-lg font-medium">
-          <a href="#" class="text-gray-300 focus:outline-none">
+          <a href="/tools/hub" class="text-gray-300 focus:outline-none">
             <span class="absolute inset-0" aria-hidden="true"></span>
             Script Hub
           </a>

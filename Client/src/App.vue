@@ -5,8 +5,10 @@ import Auth from "./page/Auth.vue";
 import APIs from "./page/APIs.vue";
 import Scripts from "./page/Scripts.vue";
 import Tools from "./page/Tools.vue";
+import SHub from "./page/SHub.vue";
 import Manage from "./page/Manage.vue";
 import Docs from "./page/Docs.vue";
+import NotFound from "./page/404.vue";
 </script>
 
 <template>
@@ -15,9 +17,11 @@ import Docs from "./page/Docs.vue";
   <Auth />
   <APIs />
   <Tools />
+  <SHub />
   <Scripts />
   <Manage />
   <Docs />
+  <NotFound />
 </template>
 
 <style>

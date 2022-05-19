@@ -1,6 +1,6 @@
 # VPS Installation/Setup
 
-We use [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) to host our website and so can you, Sign-up from our link to get a free $100 bonus and help us get $25 to keep thsi site running.
+We use [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) to host our website and so can you, Sign-up from our link to get a free $100 bonus and help us get $25 to keep this project running.
 
 [![DigitalOcean Referral Badge](https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%202.svg)](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
 

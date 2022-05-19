@@ -30,7 +30,7 @@ export default {
     Dashboard
   </a>
   <a
-    href="/apis"
+    href="/scripts"
     class="text-gray-300 hover:text-white group flex items-center px-2 py-2 text-sm font-medium"
   >
     <svg
@@ -44,10 +44,10 @@ export default {
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
-        d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
       />
     </svg>
-    APIs
+    Scripts
   </a>
   <a
     href="/tools"
@@ -69,8 +69,9 @@ export default {
     </svg>
     Tools
   </a>
+
   <a
-    href="/scripts"
+    href="/apis"
     class="text-gray-300 hover:text-white group flex items-center px-2 py-2 text-sm font-medium"
   >
     <svg
@@ -84,10 +85,10 @@ export default {
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
-        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+        d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
       />
     </svg>
-    Scripts
+    APIs
   </a>
   <a
     href="/docs"
