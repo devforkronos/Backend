@@ -101,6 +101,21 @@ class Master {
       );
     });
   }
+  async getScriptsCount(username: String) {
+    return new Promise((res, rej) => {
+      Conn.query(
+        "SELECT COUNT(*) AS 'COUNT' FROM scripts WHERE LOWER(owner) = ?",
+        [username.toLowerCase()],
+        function (err, data) {
+          if (err) {
+            rej(err);
+          } else {
+            res({ Data: (data[0] || {})["COUNT"] || 0 });
+          }
+        }
+      );
+    });
+  }
   /**
    * Get user stats
    */
@@ -123,7 +138,15 @@ class Master {
             console.log(err);
             return undefined;
           });
-        res({ Uses: Uses["Data"] });
+        let Scripts = await this.getScriptsCount(username)
+          .then((data) => {
+            return data;
+          })
+          .catch((err) => {
+            console.log(err);
+            return undefined;
+          });
+        res({ Uses: Uses["Data"], Scripts: Scripts["Data"] });
       } else {
         rej({ ErrCode: 403 });
       }

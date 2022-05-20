@@ -36,4 +36,4 @@ The **[LICENSE](./LICENSE)** applys to every aspect of this project including im
 
 ## Contribution
 
-BloxSafe is open to contributions. You can send a [Pull Requests](https://github.com/jareer12/BloxSafe/pulls) or open an [Issue](https://github.com/jareer12/BloxSafe/issues) if you find bugs, typos or err. You can find me on my [Discord server](https://discord.gg/M6bn9xtrhC)
+BloxSafe is open to contributions. You can send a [Pull Requests](https://github.com/jareer12/BloxSafe/pulls) or open an [Issue](https://github.com/jareer12/BloxSafe/issues) if you find bugs, typos or errors. You can find me on my [Discord server](https://discord.gg/M6bn9xtrhC).

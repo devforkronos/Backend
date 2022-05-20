@@ -9,9 +9,6 @@ export default {
     });
     var { Data: stats } = await response.json();
     this.stats = stats;
-    if (!stats) {
-      this.stats = {};
-    }
   },
   data() {
     return {
@@ -22,7 +19,7 @@ export default {
           }).format(parseFloat(number)) || "??"
         );
       },
-      stats: {},
+      stats: { Uses: 0, Scripts: 0 },
       color: localStorage.color,
     };
   },
@@ -55,7 +52,7 @@ export default {
                   Scripts Created
                 </dt>
                 <dd :class="`order-1 text-5xl font-extrabold text-${color}`">
-                  3500
+                  {{ stats.Scripts }}
                 </dd>
               </div>
               <div
