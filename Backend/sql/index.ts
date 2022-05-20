@@ -86,10 +86,54 @@ class Master {
       }
     });
   }
+  async getUsersUses(username: String) {
+    return new Promise((res, rej) => {
+      Conn.query(
+        "SELECT SUM(uses) AS 'COUNT' FROM scripts WHERE LOWER(owner) = ?",
+        [username.toLowerCase()],
+        function (err, data) {
+          if (err) {
+            rej(err);
+          } else {
+            res({ Data: (data[0] || {})["COUNT"] || 0 });
+          }
+        }
+      );
+    });
+  }
+  /**
+   * Get user stats
+   */
+  async getUserStats(token: String) {
+    return new Promise(async (res, rej) => {
+      let username: String = await this.userByToken(token)
+        .then((data) => {
+          return data["username"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
+
+      if (username) {
+        let Uses = await this.getUsersUses(username)
+          .then((data) => {
+            return data;
+          })
+          .catch((err) => {
+            console.log(err);
+            return undefined;
+          });
+        res({ Uses: Uses["Data"] });
+      } else {
+        rej({ ErrCode: 403 });
+      }
+    });
+  }
+
   /**
    * Get a user by login credentials
    */
-  getUser(username: String, password: String) {
+  async getUser(username: String, password: String) {
     return new Promise(async (res, rej) => {
       if (!username || !password) rej({ ErrCode: 400 });
       let user = await this.userByUsername(username)

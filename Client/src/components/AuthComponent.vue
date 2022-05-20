@@ -36,7 +36,7 @@ export default {
                 if (data.Data.token) {
                   localStorage.setItem("token", data.Data.token);
                   setTimeout(() => {
-                    window.localtion.reload();
+                    window.location.reload();
                   }, 250);
                 } else {
                   localStorage.removeItem("token");

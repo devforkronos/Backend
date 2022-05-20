@@ -1,8 +1,28 @@
 <script>
 export default {
   name: "DashboardStats",
+  async created() {
+    const response = await fetch(`${window.$BackendURL}/api/v1/stats/me`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: localStorage.token }),
+    });
+    var { Data: stats } = await response.json();
+    this.stats = stats;
+    if (!stats) {
+      this.stats = {};
+    }
+  },
   data() {
     return {
+      format(number) {
+        return (
+          Intl.NumberFormat("en", {
+            notation: "compact",
+          }).format(parseFloat(number)) || "??"
+        );
+      },
+      stats: {},
       color: localStorage.color,
     };
   },
@@ -25,7 +45,7 @@ export default {
                   Requests
                 </dt>
                 <dd :class="`order-1 text-5xl font-extrabold text-${color}`">
-                  100M+
+                  {{ format(stats.Uses) }}
                 </dd>
               </div>
               <div class="flex flex-col p-6 text-center">

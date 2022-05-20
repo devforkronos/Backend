@@ -14,6 +14,16 @@ export default {
   },
   data() {
     return {
+      toggleNewScriptObfuscation() {
+        if (
+          localStorage.new_script_obfuscation == true ||
+          localStorage.new_script_obfuscation == "true"
+        ) {
+          localStorage.setItem("new_script_obfuscation", false);
+        } else {
+          localStorage.setItem("new_script_obfuscation", true);
+        }
+      },
       toggleNewScriptPrivate() {
         if (
           localStorage.new_script_private == true ||
@@ -24,6 +34,7 @@ export default {
           localStorage.setItem("new_script_private", true);
         }
       },
+
       script: {},
       localStorage: localStorage,
       new_script_private: localStorage.new_script_private,
@@ -97,21 +108,32 @@ export default {
             />
           </div>
         </div>
+        <div
+          class="mt-3 grid text-gray-300 items-center flex w-full grid-cols-2"
+        >
+          <div>Obfuscation</div>
+          <div class="w-full float-right">
+            <ToggleButton
+              :toggled="localStorage.new_script_obfuscation"
+              :onClick="toggleNewScriptObfuscation"
+            />
+          </div>
+        </div>
 
         <input
           placeholder="Enter script name here"
           v-model="localStorage.new_script_name"
-          :class="`scrollbar-thin py-3 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-400 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
+          :class="`scrollbar-thin py-3 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-300 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
         />
         <input
           placeholder="Enter script description"
           v-model="localStorage.new_script_description"
-          :class="`scrollbar-thin py-3 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-400 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
+          :class="`scrollbar-thin py-3 scrollbar-thumb-${color} scrollbar-track-bray-400 mt-3 overflow-y-scroll rounded text-gray-300 text-sm bg-bray-500 border border-bray-300 resize-none w-full focus:outline-none px-3`"
         />
         <textarea
           placeholder="Paste your script code here"
           v-model="localStorage.new_script_code"
-          :class="`scrollbar-thin scrollbar-thumb-${color} scrollbar-track-bray-400 overflow-y-scroll rounded text-gray-400 h-screen text-sm bg-bray-500 border border-bray-300 resize-none w-full mt-3 focus:outline-none px-3 py-3`"
+          :class="`scrollbar-thin scrollbar-thumb-${color} scrollbar-track-bray-400 overflow-y-scroll rounded text-gray-300 h-screen text-sm bg-bray-500 border border-bray-300 resize-none w-full mt-3 focus:outline-none px-3 py-3`"
         >
         </textarea>
         <div class="grid-cols-1 grid mt-1">

@@ -1,41 +1,41 @@
 import TailDown from "./taildown";
+const routes = {
+  "/": {
+    component: "WelcomeComponent",
+  },
+  "/dashboard": {
+    component: "HomeComponent",
+  },
+  "/auth": {
+    component: "AuthComponent",
+  },
+  "/apis": {
+    component: "APIsComponent",
+  },
+  "/scripts": {
+    component: "ScriptsComponent",
+  },
+  "/docs": {
+    component: "DocsComponent",
+  },
+  "/tools": {
+    component: "ToolsComponent",
+  },
+  "/scripts/new": {
+    component: "NewScriptComponent",
+  },
+  "/manage-script": {
+    component: "ManageComponent",
+  },
+  "/tools/hub": {
+    component: "ScriptHubComponent",
+  },
+  "/tools/obfuscator": {
+    component: "ObfuscatorComponent",
+  },
+};
 
 function index() {
-  const routes = {
-    "/": {
-      component: "WelcomeComponent",
-    },
-    "/dashboard": {
-      component: "HomeComponent",
-    },
-    "/auth": {
-      component: "AuthComponent",
-    },
-    "/apis": {
-      component: "APIsComponent",
-    },
-    "/scripts": {
-      component: "ScriptsComponent",
-    },
-    "/docs": {
-      component: "DocsComponent",
-    },
-    "/tools": {
-      component: "ToolsComponent",
-    },
-    "/scripts/new": {
-      component: "NewScriptComponent",
-    },
-    "/manage-script": {
-      component: "ManageComponent",
-    },
-    "/tools/hub": {
-      component: "ScriptHubComponent",
-    },
-    "/tools/obfuscator": {
-      component: "ObfuscatorComponent",
-    },
-  };
   if (localStorage.token) {
     const path = window.location.pathname ? window.location.pathname : "/";
     routes[path]

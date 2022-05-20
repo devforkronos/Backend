@@ -11,6 +11,20 @@ Router.get("/", async function (req, res) {
 Router.post("/me", async function (req, res) {
   DB.userByToken(req.body.token)
     .then((data) => {
+      delete data.password;
+      res.json({
+        Success: true,
+        Data: data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
+Router.post("/stats/me", async function (req, res) {
+  DB.getUserStats(req.body.token)
+    .then((data) => {
       res.json({
         Success: true,
         Data: data,

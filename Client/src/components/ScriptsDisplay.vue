@@ -39,7 +39,7 @@ export default {
     </div>
     <ul
       role="list"
-      class="grid grid-cols-1 mt-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
+      class="grid mt-5 grid-cols-1 mt-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
     >
       <div
         class="xl:col-span-3 mt-1 lg:col-span-2 w-full"

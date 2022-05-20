@@ -13,6 +13,7 @@ export default {
     DashboardStats,
     HeaderSearchbox,
   },
+
   data() {
     return {
       color: localStorage.color,

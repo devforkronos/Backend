@@ -1,28 +1,33 @@
 # BloxSafe
 
-🚀 Dashboard to manage your Roblox scripts. Live preview on [https://bs.jubot.site/](https://bs.jubot.site/). Username: `demo`, Password: `demo`
+**[IN DEVELOPMENT]**. 🚀 Dashboard to manage your Roblox scripts. Live preview at [https://bs.jubot.site/](https://bs.jubot.site/).
+
+```yaml
+Username: demo
+Password: demo
+```
 
 ## Features
 
 - 5 Themes
+- Key System
 - Script Obfuscation
 - Script Minification
 - Premade Custom Script Hub
-- Key System
 - Discord Webhook Integration
 
 ## Installation
 
 - **[Frontend Installation](/Client/README.md)**
 - **[Backend Installation](/Backend/README.MD)**
-- **[VPS Installation(recommended)](/VPS_INSTALLATION.MD)**
+- **[DigitalOcean Installation(BEST)](/VPS_INSTALLATION.MD)**
 
 ## Preview
 
-![Image](./preview//BlueAPIs.jpg)
-![Image](./preview/BlueDash.jpg)
-![Image](./preview/BlueScript.jpg)
-![Image](./preview/BlueTools.jpg)
+![Image](./bin//1.jpg)
+![Image](./bin/2.jpg)
+![Image](./bin/3.jpg)
+![Image](./bin/4.jpg)
 
 ## License
 
@@ -30,4 +35,4 @@ The **[LICENSE](./LICENSE)** applys to every aspect of this project including im
 
 ## Contribution
 
-BloxSafe is open to contributions. You can send a [Pull Requests](https://github.com/jareer12/BloxSafe/pulls) or open an [Issue](https://github.com/jareer12/BloxSafe/issues) if you find bugs, typos or errors.
+BloxSafe is open to contributions. You can send a [Pull Requests](https://github.com/jareer12/BloxSafe/pulls) or open an [Issue](https://github.com/jareer12/BloxSafe/issues) if you find bugs, typos or err. You can find me on my [Discord server](https://discord.gg/M6bn9xtrhC)

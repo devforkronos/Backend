@@ -14,18 +14,20 @@ import Obfuscator from "./page/Obfuscator.vue";
 </script>
 
 <template>
-  <Tools />
-  <Welcome />
-  <Home />
-  <Auth />
-  <APIs />
-  <SHub />
-  <Scripts />
-  <Manage />
-  <Docs />
-  <NotFound />
-  <NewScript />
-  <Obfuscator />
+  <div class="bg-bray-500">
+    <Tools />
+    <Welcome />
+    <Home />
+    <Auth />
+    <APIs />
+    <SHub />
+    <Scripts />
+    <Manage />
+    <Docs />
+    <NotFound />
+    <NewScript />
+    <Obfuscator />
+  </div>
 </template>
 
 <style>

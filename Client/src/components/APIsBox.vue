@@ -56,7 +56,7 @@ export default {
               </span>
             </div>
           </label>
-          <div v-for="(item, index) in apis" class="w-full">
+          <div v-for="item in apis" class="w-full" :key="item">
             <a
               :href="`/manage-api?id=${item.id}`"
               target="_blank"
