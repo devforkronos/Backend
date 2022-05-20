@@ -1,4 +1,4 @@
-# VPS Installation/Setup
+# [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) Installation/Setup
 
 In this documentation you will learn to deploy BloxSafe on [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge). We use [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) to host our website and so can you, Sign-up from our link to get a free $100 bonus and help us get $25 to keep this project running.
 [![DigitalOcean Referral Badge](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg)](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
@@ -11,7 +11,7 @@ In this documentation you will learn to deploy BloxSafe on [DigitalOcean](https:
 
 ## Installation
 
-Create a Ubuntu-based droplet on DigitalOcean. Once you have created a droplet on DigitalOcean and are in your Ubuntu machine run the following script.
+Create a Ubuntu-based droplet on [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge). Once you have created a droplet on [DigitalOcean](https://www.digitalocean.com/?refcode=bcc56aadc190&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) and are in your Ubuntu machine run the following script.
 
 ```shell
 
