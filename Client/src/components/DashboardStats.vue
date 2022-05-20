@@ -2,13 +2,15 @@
 export default {
   name: "DashboardStats",
   async created() {
-    const response = await fetch(`${window.$BackendURL}/api/v1/stats/me`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ token: localStorage.token }),
-    });
-    var { Data: stats } = await response.json();
-    this.stats = stats;
+    if (localStorage.token) {
+      const response = await fetch(`${window.$BackendURL}/api/v1/stats/me`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ token: localStorage.token }),
+      });
+      var { Data: stats } = await response.json();
+      this.stats = stats;
+    }
   },
   data() {
     return {

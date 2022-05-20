@@ -24,7 +24,8 @@ Password: demo
 
 ## Preview
 
-![Image](./bin//1.jpg)
+![Image](./bin/0.jpg)
+![Image](./bin/1.jpg)
 ![Image](./bin/2.jpg)
 ![Image](./bin/3.jpg)
 ![Image](./bin/4.jpg)
