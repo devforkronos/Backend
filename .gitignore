@@ -1,3 +1,4 @@
+./Backend/*.js
 # Logs
 logs
 *.log
