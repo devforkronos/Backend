@@ -134,7 +134,7 @@ Router.post("/tools/obfuscator", async function (req, res) {
   try {
     res.json({
       Success: true,
-      Data: { Code: Obfuscator(req.body.code || "") },
+      Data: { Code: Obfuscator(req.body.code || "", req.body.minify || false) },
     });
   } catch {
     res.json(Routes.errors[`500`]);

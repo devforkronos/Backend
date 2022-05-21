@@ -1,10 +1,13 @@
-const Luamin = require("lua-format");
+const Luamin = require("./obfuscator/index");
+
 const Settings = {
   RenameVariables: true,
   RenameGlobals: false,
   SolveMath: true,
 };
 
-module.exports = function main(Code) {
-  return Luamin.Minify(Luamin.Uglify(Code, Settings), Settings);
+module.exports = function main(Code, Minify) {
+  return Minify == true
+    ? Luamin.Minify(Luamin.Uglify(Code, Settings), Settings)
+    : Luamin.Uglify(Code, Settings);
 };
