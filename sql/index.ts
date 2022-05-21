@@ -274,8 +274,12 @@ class Master {
           if (error) {
             rej({ ErrCode: 500 });
           } else {
-            if (results.length > 0) {
-              res(results[0]);
+            if (results) {
+              if (results.length > 0) {
+                res(results[0]);
+              } else {
+                rej({ ErrCode: 403 });
+              }
             } else {
               rej({ ErrCode: 403 });
             }
@@ -294,12 +298,21 @@ class Master {
         .then((Owner) => {
           if (Owner) {
             let name = data["name"];
-            if (!name) rej({ ErrCode: 400 });
-            let content = Cryptor.encrypt(data["content"]);
+            let content = data["content"];
+            if (!name || !content) return rej({ ErrCode: 400 });
+            content = Cryptor.encrypt(data["content"]);
             let obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
             Conn.query(
-              "INSERT INTO scripts(name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?)",
-              [name, content, obcontent, Owner["username"], id],
+              "INSERT INTO scripts(private, obfuscate, name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?, ?, ?)",
+              [
+                data["private"],
+                data["obfuscate"],
+                name,
+                content,
+                obcontent,
+                Owner["username"],
+                id,
+              ],
               function (err, results) {
                 if (err) {
                   Cooler.red(err);
@@ -316,10 +329,65 @@ class Master {
           }
         })
         .catch((err) => {
+          Cooler.red(err);
           rej({ ErrCode: 403 });
         });
     });
   }
+  /**
+   * Update your script
+   */
+  updateScript(id: String, token: String, data: object) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            this.getScriptById(id)
+              .then((results) => {
+                if ((results["Data"].owner = Owner["username"].toLowerCase())) {
+                  Conn.query(
+                    "UPDATE scripts SET obfuscated_content = ?, content = ?, private = ?, obfuscate = ? WHERE id = ?",
+                    [
+                      Cryptor.encrypt(Obfuscator(data["content"])),
+                      Cryptor.encrypt(data["content"]),
+                      `${data["private"] == true ? 1 : 0}`,
+                      `${data["obfuscate"] == true ? 1 : 0}`,
+                      id,
+                    ],
+                    function (err, data) {
+                      if (err) {
+                        Cooler.red(err);
+                        rej({ ErrCode: 500 });
+                      } else {
+                        res({ Data: { id: id } });
+                      }
+                    }
+                  );
+                } else {
+                  rej({
+                    ErrCode: 401,
+                    DisplayMessage:
+                      "You are not allowed to configure this script",
+                  });
+                }
+              })
+              .catch((err) => {
+                rej({
+                  ErrCode: 404,
+                  DisplayMessage: "This script does not exist",
+                });
+              });
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          Cooler.red(err);
+          rej({ ErrCode: 403 });
+        });
+    });
+  }
+
   /**
    * Get script from database
    */

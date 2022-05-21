@@ -117,6 +117,19 @@ Router.post("/script/create", async function (req, res) {
     });
 });
 
+Router.post("/script/update", async function (req, res) {
+  DB.updateScript(req.body.id, req.body.token, req.body.data || {})
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
 Router.get("/script/owner/:owner", async function (req, res) {
   DB.getScriptsByUser(req.params.owner)
     .then((data) => {
