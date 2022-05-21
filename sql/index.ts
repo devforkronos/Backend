@@ -117,6 +117,51 @@ class Master {
     });
   }
   /**
+   * Create new API Key
+   */
+  async createAPIKey(token: String, data: Object) {
+    return new Promise(async (res, rej) => {
+      if (!data) data = {};
+      if (!data["name"]) rej({ ErrCode: 400 });
+      let username: String = await this.userByToken(token)
+        .then((data) => {
+          return data["username"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
+
+      if (username) {
+        let key: String = rString(64);
+        let id: String = rString(12);
+        console.log(key);
+        Conn.query(
+          "INSERT INTO apis(`key`, name, created, id, owner, description) VALUES(?, ?, ?, ?, ?, ?)",
+          [
+            key,
+            data["name"],
+            new Date().getTime(),
+            id,
+            username,
+            data["description"] || null,
+          ],
+          function (err, data) {
+            if (err) {
+              Cooler.red(err);
+              rej({ ErrCode: 500 });
+            } else {
+              res({
+                Data: { key: key },
+              });
+            }
+          }
+        );
+      } else {
+        rej({ ErrCode: 403 });
+      }
+    });
+  }
+  /**
    * Get user stats
    */
   async getUserStats(token: String) {

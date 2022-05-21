@@ -154,4 +154,17 @@ Router.post("/apis/me", async function (req, res) {
     });
 });
 
+Router.post("/apis/create", async function (req, res) {
+  DB.createAPIKey(req.body.token, req.body.data || {})
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
 module.exports = Router;
