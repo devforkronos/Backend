@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "removeComments": true,
     "target": "ES2022"
   },
   "rules": {
     "no-unused-declaration": true
   },
   "include": [
+    "*.ts",
     "./*.ts",
     "./apis/*.ts",
     "./sql/*.ts",
     "./routes/*.ts",
     "./home/*.ts",
     "./public/*.ts",
-    "./module/*.ts"
+    "./module/*.ts",
     "./module/*/*.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts"]
