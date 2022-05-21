@@ -21,30 +21,15 @@ mkdir /root/nodejs
 cd /root/nodejs
 rm -r BloxSafe
 
-git clone https://github.com/jareer12/BloxSafe.git
-
-rm -r /var/www/BloxSafe
-mv ./BloxSafe/Client /var/www/BloxSafe
-
-cd /var/www/BloxSafe
+git clone https://github.com/BloxSafe/Backend.git BloxSafe
+cd BloxSafe
 rm -r ./bin
-
 npm install
 npm run build
-
-cd /root/nodejs/BloxSafe/Backend
-
-npm install
-npm run build
-
 mv .env.test .env
-
-killall nginx
-nginx
-
 ```
 
-Once you run this shell script you will have two new directories, `/var/www/BloxSafe` for frontend and `/root/nodejs/BloxSafe` for backend. The frontend will run via the script but to start the backend you will have to follow the following steps.
+Once you run this shell script you will have a new directory at `/root/nodejs/BloxSafe`.
 
 ```shell
 cd /root/nodejs/BloxSafe/Backend

@@ -18,9 +18,8 @@ Password: demo
 
 ## Installation
 
-- **[Frontend Installation](/Client/README.md)**
-- **[Backend Installation](/Backend/README.MD)**
-- **[DigitalOcean Installation(BEST)](/VPS_INSTALLATION.MD)**
+- **[Docker Installation](./DOCKER_INSTALLATION.md)**
+- **[DigitalOcean Installation(BEST)](./VPS_INSTALLATION.MD)**
 
 ## Preview
 
