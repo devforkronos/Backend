@@ -7,6 +7,15 @@ Username: demo
 Password: demo
 ```
 
+## Table of Contents
+
+- [License](/#License)
+- [Preview](/#Preview)
+- [Features](/#Features)
+- [Installation](/#Installation)
+- [Contribution](/#Contribution)
+- [Frontend Installation](https://github.com/BloxSafe/Frontend)
+
 ## Features
 
 - 5 Themes
