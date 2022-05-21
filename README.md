@@ -32,13 +32,6 @@ Password: demo
 
 ## Preview
 
-![Image](./bin/0.jpg)
-![Image](./bin/1.jpg)
-![Image](./bin/2.jpg)
-![Image](./bin/3.jpg)
-![Image](./bin/4.jpg)
-![Image](./bin/5.jpg)
-
 ## License
 
 The **[LICENSE](./LICENSE)** applys to every aspect of this project including images, backend code & frontend code. Also, paid distribution and commercial use is strictly prohibited. Anyone can use this "software" as far they are permitted, The owner/developer of this project has the full right to provoke your right to use this "software" at any time. In simple terms you can host this "software" and allow others to use off your hosting as far you don't remove watermarks and give proper credit.
