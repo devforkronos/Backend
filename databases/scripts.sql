@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS `scripts` (
   `private` tinyint(1) NOT NULL,
   `obfuscate` tinyint(1) NOT NULL,
   `name` TEXT DEFAULT NULL,
-  `views` int(11) NOT NULL DEFAULT 0,
+  `description` TEXT NULL,
+  `uses` int(11) NOT NULL DEFAULT 0,
   `obfuscated_content` LONGTEXT NOT NULL,
   PRIMARY KEY (`id`)
 )

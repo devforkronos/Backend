@@ -3,6 +3,7 @@ const Routes = require("../config/routes.json");
 const Cryptor = require("../module/crypt");
 const Router = require("express").Router();
 const DB = require("../sql/index");
+const misc = require("../config/misc.json");
 Router.get("/", async function (req, res) {
     res.json({ Success: true });
 });
@@ -99,6 +100,30 @@ Router.get("/script/get/:id", async (req, res) => {
         res.json(Routes.errors[`${err.ErrCode}`]);
     });
 });
+Router.post("/script/data/:id", async (req, res) => {
+    DB.getScriptDataById(req.body.token, req.params.id)
+        .then((data) => {
+        res.json({
+            Success: true,
+            Data: data.Data,
+        });
+    })
+        .catch((err) => {
+        res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+Router.post("/api/data/:id", async (req, res) => {
+    DB.getAPIDataById(req.body.token, req.params.id)
+        .then((data) => {
+        res.json({
+            Success: true,
+            Data: data.Data,
+        });
+    })
+        .catch((err) => {
+        res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
 Router.post("/script/create", async function (req, res) {
     DB.createScript(req.body.token, req.body.data || {})
         .then((data) => {
@@ -150,6 +175,20 @@ Router.post("/apis/me", async function (req, res) {
     DB.getAPIsByToken(req.body.token)
         .then((data) => {
         res.json({
+            max: misc["maxAPIs"],
+            Success: true,
+            Data: data.Data,
+        });
+    })
+        .catch((err) => {
+        res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+Router.post("/webhooks/me", async function (req, res) {
+    DB.getWebhooksByToken(req.body.token)
+        .then((data) => {
+        res.json({
+            max: misc["maxWebhooks"],
             Success: true,
             Data: data.Data,
         });
@@ -167,7 +206,11 @@ Router.post("/apis/create", async function (req, res) {
         });
     })
         .catch((err) => {
-        res.json(Routes.errors[`${err.ErrCode}`]);
+        let resp = Routes.errors[`${err.ErrCode}`];
+        if (err.DisplayMessage) {
+            resp["DisplayMessage"] = err.DisplayMessage;
+        }
+        res.json(resp);
     });
 });
 module.exports = Router;

@@ -6,6 +6,8 @@ const MySQL = require("mysql2");
 const path = require("path");
 const fs = require("fs");
 
+const misc = require("../config/misc.json");
+
 const Conn = MySQL.createConnection({
   host: `${process.env.MYSQL_HOSTNAME}`,
   user: `${process.env.MYSQL_USERNAME}`,
@@ -123,6 +125,13 @@ class Master {
     return new Promise(async (res, rej) => {
       if (!data) data = {};
       if (!data["name"]) rej({ ErrCode: 400 });
+      let count: Number = await this.getAPIsCount(token)
+        .then((data) => {
+          return data["Count"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
       let username: String = await this.userByToken(token)
         .then((data) => {
           return data["username"];
@@ -132,9 +141,13 @@ class Master {
         });
 
       if (username) {
+        if (count >= misc["maxAPIs"])
+          return rej({
+            ErrCode: 400,
+            DisplayMessage: "You have reached your API limit",
+          });
         let key: String = rString(64);
         let id: String = rString(12);
-        console.log(key);
         Conn.query(
           "INSERT INTO apis(`key`, name, created, id, owner, description) VALUES(?, ?, ?, ?, ?, ?)",
           [
@@ -151,7 +164,7 @@ class Master {
               rej({ ErrCode: 500 });
             } else {
               res({
-                Data: { key: key },
+                Data: { key: key, id: id },
               });
             }
           }
@@ -161,6 +174,38 @@ class Master {
       }
     });
   }
+
+  async getAPIsCount(token: String) {
+    return new Promise(async (res, rej) => {
+      let username: String = await this.userByToken(token)
+        .then((data) => {
+          return data["username"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
+
+      if (username) {
+        Conn.query(
+          "SELECT COUNT(*) AS 'COUNT' FROM apis WHERE owner = ?",
+          [username],
+          function (err, data) {
+            if (err) {
+              Cooler.red(err);
+              rej({ ErrCode: 500 });
+            } else {
+              res({
+                Count: data[0]["COUNT"],
+              });
+            }
+          }
+        );
+      } else {
+        rej({ ErrCode: 403 });
+      }
+    });
+  }
+
   /**
    * Get user stats
    */
@@ -301,13 +346,18 @@ class Master {
             let content = data["content"];
             if (!name || !content) return rej({ ErrCode: 400 });
             content = Cryptor.encrypt(data["content"]);
-            let obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
+            try {
+              let obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
+            } catch {
+              var obcontent = "";
+            }
             Conn.query(
-              "INSERT INTO scripts(private, obfuscate, name, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?, ?, ?)",
+              "INSERT INTO scripts(private, obfuscate, name, description, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
               [
-                data["private"],
-                data["obfuscate"],
+                data["private"] == true ? 1 : 0,
+                data["obfuscate"] == true ? 1 : 0,
                 name,
+                data["description"],
                 content,
                 obcontent,
                 Owner["username"],
@@ -344,11 +394,16 @@ class Master {
           if (Owner) {
             this.getScriptById(id)
               .then((results) => {
+                try {
+                  var obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
+                } catch {
+                  obcontent = "";
+                }
                 if ((results["Data"].owner = Owner["username"].toLowerCase())) {
                   Conn.query(
                     "UPDATE scripts SET obfuscated_content = ?, content = ?, private = ?, obfuscate = ? WHERE id = ?",
                     [
-                      Cryptor.encrypt(Obfuscator(data["content"])),
+                      obcontent,
                       Cryptor.encrypt(data["content"]),
                       `${data["private"] == true ? 1 : 0}`,
                       `${data["obfuscate"] == true ? 1 : 0}`,
@@ -421,6 +476,100 @@ class Master {
       );
     });
   }
+
+  /**
+   * Get script data from database
+   */
+  getScriptDataById(token: String, id: String | Number) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            Conn.query(
+              "SELECT * FROM scripts WHERE id = ?",
+              [id],
+              function (err, results) {
+                if (err) {
+                  console.log(err);
+                  rej({ ErrCode: 500 });
+                } else {
+                  if (results.length > 0) {
+                    let script = results[0];
+                    try {
+                      script.content = Cryptor.decrypt(script.content);
+                    } catch {
+                      script.content = "";
+                    }
+
+                    try {
+                      script.obfuscated_content = Cryptor.decrypt(
+                        script.obfuscated_content
+                      );
+                    } catch {
+                      script.obfuscated_content = "";
+                    }
+                    if (script.owner == Owner["username"]) {
+                      res({
+                        Data: script,
+                      });
+                    } else {
+                      rej({ ErrCode: 404 });
+                    }
+                  } else {
+                    rej({ ErrCode: 404 });
+                  }
+                }
+              }
+            );
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          rej({ ErrCode: 403 });
+        });
+    });
+  }
+  /**
+   * Get API data from database
+   */
+  getAPIDataById(token: String, id: String | Number) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            Conn.query(
+              "SELECT * FROM apis WHERE id = ?",
+              [id],
+              function (err, results) {
+                if (err) {
+                  console.log(err);
+                  rej({ ErrCode: 500 });
+                } else {
+                  if (results.length > 0) {
+                    let api = results[0];
+                    if (api.owner == Owner["username"]) {
+                      res({
+                        Data: api,
+                      });
+                    } else {
+                      rej({ ErrCode: 404 });
+                    }
+                  } else {
+                    rej({ ErrCode: 404 });
+                  }
+                }
+              }
+            );
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          rej({ ErrCode: 403 });
+        });
+    });
+  }
   /**
    * Get user's scripts by username, private script contetn is removed
    */
@@ -474,6 +623,34 @@ class Master {
     });
   }
   /**
+   * Get user's Webhooks by token.
+   */
+  getWebhooksByToken(token: String) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            if (Owner["username"]) {
+              this.getWebhooksByUsername(Owner["username"])
+                .then((results) => {
+                  res({ Data: results["Data"] });
+                })
+                .catch((err) => {
+                  rej({ ErrCode: err.errCode });
+                });
+            } else {
+              rej({ ErrCode: 403 });
+            }
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          rej({ ErrCode: 403 });
+        });
+    });
+  }
+  /**
    * Get user's APIs by token.
    */
   getAPIsByToken(token: String) {
@@ -502,12 +679,32 @@ class Master {
     });
   }
   /**
-   * Get user's APIs by token. Never send back this data to client as response
+   * Get user's APIs by Username. Never send back this data to client as response
    */
   getAPIsByUsername(username: String) {
     return new Promise(async (res, rej) => {
       Conn.query(
         "SELECT * FROM apis WHERE owner = ?",
+        [username],
+        function (err, results) {
+          if (err) {
+            rej({ ErrCode: 500 });
+          } else {
+            res({
+              Data: results,
+            });
+          }
+        }
+      );
+    });
+  }
+  /**
+   * Get user's webhooks by Username. Never send back this data to client as response
+   */
+  getWebhooksByUsername(username: String) {
+    return new Promise(async (res, rej) => {
+      Conn.query(
+        "SELECT * FROM webhooks WHERE owner = ?",
         [username],
         function (err, results) {
           if (err) {

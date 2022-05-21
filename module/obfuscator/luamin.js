@@ -694,9 +694,6 @@ function CreateLuaParser(text) {
         }
         else {
             let i;
-            for (i = -3; i <= 3; i++) {
-                print(`Tokens[${i}] = \`${peek(i).Source}\``);
-            }
             if (source) {
                 let a = `${getTokenStartPosition(tk)}: \`${source}\` expected.`;
                 throw a;

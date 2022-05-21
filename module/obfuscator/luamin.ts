@@ -786,9 +786,9 @@ function CreateLuaParser(text) {
       return get();
     } else {
       let i;
-      for (i = -3; i <= 3; i++) {
-        print(`Tokens[${i}] = \`${peek(i).Source}\``);
-      }
+      // for (i = -3; i <= 3; i++) {
+      //   print(`Tokens[${i}] = \`${peek(i).Source}\``);
+      // }
       if (source) {
         let a = `${getTokenStartPosition(tk)}: \`${source}\` expected.`;
         throw a;
