@@ -32,7 +32,7 @@ mv .env.test .env
 Once you run this shell script you will have a new directory at `/root/nodejs/BloxSafe`.
 
 ```shell
-cd /root/nodejs/BloxSafe/Backend
+cd /root/nodejs/BloxSafe
 nano .env ## Open the .env file to edit(linux)
 ```
 
