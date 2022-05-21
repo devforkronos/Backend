@@ -24,6 +24,7 @@ git clone https://github.com/BloxSafe/Backend.git BloxSafe
 cd BloxSafe
 rm -r ./bin
 npm install
+npm update
 mv .env.test .env
 
 ```
@@ -32,7 +33,6 @@ Once you run this shell script you will have a new directory at `/root/nodejs/Bl
 
 ```shell
 cd /root/nodejs/BloxSafe/Backend
-#!/usr/bin/env bash npm run build
 nano .env ## Open the .env file to edit(linux)
 ```
 
