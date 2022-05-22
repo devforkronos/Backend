@@ -1,4 +1,4 @@
-CREATE TABLE `webhooks` (
+CREATE TABLE IF NOT EXISTS `webhooks` (
   `id` varchar(255) NOT NULL,
   `url` varchar(125) NOT NULL,
   `owner` text NOT NULL,

@@ -1,12 +1,9 @@
-CREATE TABLE `scripts` (
-  `id` varchar(255) NOT NULL,
-  `content` LONGTEXT NOT NULL,
-  `owner` text NOT NULL,
-  `private` tinyint(1) NOT NULL,
-  `obfuscate` tinyint(1) NOT NULL,
-  `name` text DEFAULT NULL,
-  `obfuscated_content` LONGTEXT NOT NULL DEFAULT 'content',
-  `uses` int(11) NOT NULL DEFAULT 0,
-  `description` text DEFAULT NULL
+CREATE TABLE IF NOT EXISTS `users` (
+  `username` text NOT NULL,
+  `id` bigint(20) AUTO_INCREMENT,
+  `token` text NOT NULL,
+  `password` text NOT NULL,
+  `created` bigint(20) NOT NULL,
+  UNIQUE KEY `username` (`username`),
   PRIMARY KEY (`id`)
 )
