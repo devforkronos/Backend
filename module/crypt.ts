@@ -27,38 +27,42 @@ module.exports = {
       });
     });
   },
-  encrypt: (text) => {
-    return text;
-
-    // const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
-    // const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
-    // const applySaltToChar = (code) =>
-    //   textToChars(salt).reduce((a, b) => a ^ b, code);
-    // try {
-    //   return text
-    //     .split("")
-    //     .map(textToChars)
-    //     .map(applySaltToChar)
-    //     .map(byteHex)
-    //     .join("");
-    // } catch {
-    //   return text;
-    // }
+  encrypt: (c) => {
+    var x = "charCodeAt",
+      b,
+      e = {},
+      f = c.split(""),
+      d = [],
+      a = f[0],
+      g = 256;
+    for (b = 1; b < f.length; b++)
+      (c = f[b]),
+        null != e[a + c]
+          ? (a += c)
+          : (d.push(1 < a.length ? e[a] : a[x](0)),
+            (e[a + c] = g),
+            g++,
+            (a = c));
+    d.push(1 < a.length ? e[a] : a[x](0));
+    for (b = 0; b < d.length; b++) d[b] = String.fromCharCode(d[b]);
+    return d.join("");
   },
-  decrypt: (encoded) => {
-    return encoded;
-    // const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
-    // const applySaltToChar = (code) =>
-    //   textToChars(salt).reduce((a, b) => a ^ b, code);
-    // try {
-    //   return encoded
-    //     .match(/.{1,2}/g)
-    //     .map((hex) => parseInt(hex, 16))
-    //     .map(applySaltToChar)
-    //     .map((charCode) => String.fromCharCode(charCode))
-    //     .join("");
-    // } catch {
-    //   return encoded;
-    // }
+  decrypt: (b) => {
+    var o, f;
+    var a,
+      e = {},
+      d = b.split(""),
+      c = (f = d[0]),
+      g = [c],
+      h = (o = 256);
+    for (b = 1; b < d.length; b++)
+      (a = d[b].charCodeAt(0)),
+        (a = h > a ? d[b] : e[a] ? e[a] : f + c),
+        g.push(a),
+        (c = a.charAt(0)),
+        (e[o] = f + c),
+        o++,
+        (f = a);
+    return g.join("");
   },
 };
