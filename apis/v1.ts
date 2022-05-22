@@ -119,6 +119,19 @@ Router.post("/script/data/:id", async (req, res) => {
     });
 });
 
+Router.post("/webhook/data/:id", async (req, res) => {
+  DB.getWebhookDataById(req.body.token, req.params.id)
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
 Router.post("/api/data/:id", async (req, res) => {
   DB.getAPIDataById(req.body.token, req.params.id)
     .then((data) => {
@@ -147,6 +160,19 @@ Router.post("/script/create", async function (req, res) {
 
 Router.post("/script/update", async function (req, res) {
   DB.updateScript(req.body.id, req.body.token, req.body.data || {})
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      res.json(Routes.errors[`${err.ErrCode}`]);
+    });
+});
+
+Router.post("/webhook/update", async function (req, res) {
+  DB.updateWebhook(req.body.id, req.body.token, req.body.data || {})
     .then((data) => {
       res.json({
         Success: true,
@@ -227,4 +253,20 @@ Router.post("/apis/create", async function (req, res) {
     });
 });
 
+Router.post("/webhooks/create", async function (req, res) {
+  DB.createWebhook(req.body.token, req.body.data || {})
+    .then((data) => {
+      res.json({
+        Success: true,
+        Data: data.Data,
+      });
+    })
+    .catch((err) => {
+      let resp = Routes.errors[`${err.ErrCode}`];
+      if (err.DisplayMessage) {
+        resp["DisplayMessage"] = err.DisplayMessage;
+      }
+      res.json(resp);
+    });
+});
 module.exports = Router;

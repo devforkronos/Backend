@@ -1,6 +1,6 @@
 # BloxSafe
 
-**[IN DEVELOPMENT]**. 🚀 Dashboard to manage your Roblox scripts. Live preview at [https://bs.jubot.site/](https://bs.jubot.site/).
+🚀 Dashboard to manage your Roblox scripts. Live preview at [https://bs.jubot.site/](https://bs.jubot.site/). This repository only includes the backend of BloxSafe, for Frontend setup please visit [Frontend Installation](https://github.com/BloxSafe/Frontend).
 
 ```yaml
 Username: demo

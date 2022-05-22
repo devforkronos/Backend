@@ -73,7 +73,7 @@ class Master {
           [data["username"], hash, token, new Date().getTime()],
           function (err, results) {
             if (err) {
-              console.log(err);
+              Cooler.red(err);
               rej({ ErrCode: 500 });
             } else {
               res({ Success: true, Data: { token: token } });
@@ -86,6 +86,20 @@ class Master {
           DisplayMessage: "An account with this username already exists",
         });
       }
+    });
+  }
+  async getStorageUsage() {
+    return new Promise((res, rej) => {
+      Conn.query(
+        `SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 AS "SIZE" FROM information_schema.TABLES GROUP BY table_schema`,
+        function (err, data) {
+          if (err) {
+            rej(err);
+          } else {
+            res({ Data: (data[0] || {})["SIZE"] || 0 });
+          }
+        }
+      );
     });
   }
   async getUsersUses(username: String) {
@@ -174,7 +188,92 @@ class Master {
       }
     });
   }
+  /**
+   * Create new webhook
+   */
+  async createWebhook(token: String, data: Object) {
+    return new Promise(async (res, rej) => {
+      if (!data) data = {};
+      if (!data["name"]) rej({ ErrCode: 400 });
+      let count: Number = await this.getWebhooksCount(token)
+        .then((data) => {
+          return data["Count"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
+      let username: String = await this.userByToken(token)
+        .then((data) => {
+          return data["username"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
 
+      if (username) {
+        if (count >= misc["maxWebhooks"])
+          return rej({
+            ErrCode: 400,
+            DisplayMessage: "You have reached your Webhooks limit",
+          });
+        let id: String = rString(12);
+        Conn.query(
+          "INSERT INTO webhooks(id, name, created, owner, description, url, log_uses) VALUES(?, ?, ?, ?, ?, ?, ?)",
+          [
+            id,
+            data["name"],
+            new Date().getTime(),
+            username,
+            data["description"],
+            data["url"],
+            data["log_uses"] || 0,
+          ],
+          function (err, data) {
+            if (err) {
+              Cooler.red(err);
+              rej({ ErrCode: 500 });
+            } else {
+              res({
+                Data: { id: id },
+              });
+            }
+          }
+        );
+      } else {
+        rej({ ErrCode: 403 });
+      }
+    });
+  }
+  async getWebhooksCount(token: String) {
+    return new Promise(async (res, rej) => {
+      let username: String = await this.userByToken(token)
+        .then((data) => {
+          return data["username"];
+        })
+        .catch((err) => {
+          return undefined;
+        });
+
+      if (username) {
+        Conn.query(
+          "SELECT COUNT(*) AS 'COUNT' FROM webhooks WHERE owner = ?",
+          [username],
+          function (err, data) {
+            if (err) {
+              Cooler.red(err);
+              rej({ ErrCode: 500 });
+            } else {
+              res({
+                Count: data[0]["COUNT"],
+              });
+            }
+          }
+        );
+      } else {
+        rej({ ErrCode: 403 });
+      }
+    });
+  }
   async getAPIsCount(token: String) {
     return new Promise(async (res, rej) => {
       let username: String = await this.userByToken(token)
@@ -225,7 +324,7 @@ class Master {
             return data;
           })
           .catch((err) => {
-            console.log(err);
+            Cooler.red(err);
             return undefined;
           });
         let Scripts = await this.getScriptsCount(username)
@@ -233,10 +332,22 @@ class Master {
             return data;
           })
           .catch((err) => {
-            console.log(err);
+            Cooler.red(err);
             return undefined;
           });
-        res({ Uses: Uses["Data"], Scripts: Scripts["Data"] });
+        let Storage = await this.getStorageUsage()
+          .then((data) => {
+            return data;
+          })
+          .catch((err) => {
+            Cooler.red(err);
+            return undefined;
+          });
+        res({
+          Uses: Uses["Data"],
+          Scripts: Scripts["Data"],
+          Storage: Storage["Data"],
+        });
       } else {
         rej({ ErrCode: 403 });
       }
@@ -394,17 +505,18 @@ class Master {
           if (Owner) {
             this.getScriptById(id)
               .then((results) => {
+                let content = Cryptor.encrypt(data["content"]);
                 try {
                   var obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
                 } catch {
-                  obcontent = "";
+                  obcontent = content;
                 }
                 if ((results["Data"].owner = Owner["username"].toLowerCase())) {
                   Conn.query(
                     "UPDATE scripts SET obfuscated_content = ?, content = ?, private = ?, obfuscate = ? WHERE id = ?",
                     [
                       obcontent,
-                      Cryptor.encrypt(data["content"]),
+                      content,
                       `${data["private"] == true ? 1 : 0}`,
                       `${data["obfuscate"] == true ? 1 : 0}`,
                       id,
@@ -442,7 +554,53 @@ class Master {
         });
     });
   }
-
+  /**
+   * Update a webhook
+   */
+  updateWebhook(id: String, token: String, data: object) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            this.getWebhookDataById(token, id)
+              .then((results) => {
+                if ((results["Data"].owner = Owner["username"].toLowerCase())) {
+                  Conn.query(
+                    "UPDATE webhooks SET url = ?, log_uses = ? WHERE id = ?",
+                    [data["url"], data["log_uses"], id],
+                    function (err, data) {
+                      if (err) {
+                        Cooler.red(err);
+                        rej({ ErrCode: 500 });
+                      } else {
+                        res({ Data: { id: id } });
+                      }
+                    }
+                  );
+                } else {
+                  rej({
+                    ErrCode: 401,
+                    DisplayMessage:
+                      "You are not allowed to configure this webhook",
+                  });
+                }
+              })
+              .catch((err) => {
+                rej({
+                  ErrCode: 404,
+                  DisplayMessage: "This webhook does not exist",
+                });
+              });
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          Cooler.red(err);
+          rej({ ErrCode: 403 });
+        });
+    });
+  }
   /**
    * Get script from database
    */
@@ -453,7 +611,7 @@ class Master {
         [id],
         function (err, results) {
           if (err) {
-            console.log(err);
+            Cooler.red(err);
             rej({ ErrCode: 500 });
           } else {
             if (results.length) {
@@ -490,7 +648,7 @@ class Master {
               [id],
               function (err, results) {
                 if (err) {
-                  console.log(err);
+                  Cooler.red(err);
                   rej({ ErrCode: 500 });
                 } else {
                   if (results.length > 0) {
@@ -533,6 +691,46 @@ class Master {
   /**
    * Get API data from database
    */
+  getWebhookDataById(token: String, id: String | Number) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            Conn.query(
+              "SELECT * FROM webhooks WHERE id = ?",
+              [id],
+              function (err, results) {
+                if (err) {
+                  Cooler.red(err);
+                  rej({ ErrCode: 500 });
+                } else {
+                  if (results.length > 0) {
+                    let webhook = results[0];
+                    if (webhook.owner == Owner["username"]) {
+                      res({
+                        Data: webhook,
+                      });
+                    } else {
+                      rej({ ErrCode: 404 });
+                    }
+                  } else {
+                    rej({ ErrCode: 404 });
+                  }
+                }
+              }
+            );
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          rej({ ErrCode: 403 });
+        });
+    });
+  }
+  /**
+   * Get API data from database
+   */
   getAPIDataById(token: String, id: String | Number) {
     return new Promise(async (res, rej) => {
       this.userByToken(token)
@@ -543,7 +741,7 @@ class Master {
               [id],
               function (err, results) {
                 if (err) {
-                  console.log(err);
+                  Cooler.red(err);
                   rej({ ErrCode: 500 });
                 } else {
                   if (results.length > 0) {
@@ -580,7 +778,7 @@ class Master {
         [owner.toLowerCase()],
         function (err, results) {
           if (err) {
-            console.log(err);
+            Cooler.red(err);
             rej({ ErrCode: 500 });
           } else {
             if (results.length) {
