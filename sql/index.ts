@@ -458,9 +458,9 @@ class Master {
             if (!name || !content) return rej({ ErrCode: 400 });
             content = Cryptor.encrypt(data["content"]);
             try {
-              let obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
+              var obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
             } catch {
-              var obcontent = "";
+              obcontent = content;
             }
             Conn.query(
               "INSERT INTO scripts(private, obfuscate, name, description, content, obfuscated_content, owner, id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
