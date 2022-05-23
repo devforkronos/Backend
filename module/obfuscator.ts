@@ -1,13 +1,15 @@
-const Luamin = require("./obfuscator/index");
+const Cooler = require("./cooler");
 
-const Settings = {
-  RenameVariables: true,
-  RenameGlobals: false,
-  SolveMath: true,
-};
+const _fs = require("fs");
+const luainjs = require("lua-in-js");
 
-module.exports = function main(Code, Minify) {
-  return Minify == true
-    ? Luamin.Minify(Luamin.Uglify(Code, Settings), Settings)
-    : Luamin.Uglify(Code, Settings);
+const luaEnv = luainjs.createEnv();
+const template = _fs
+  .readFileSync(`${__dirname}/jaycator.lua`, "utf8")
+  .replace();
+
+Cooler.green(`Obfuscator Has Been Loaded`);
+module.exports = function main(code: String) {
+  let script = template.replace(/{{SourceCode}}/gi, code);
+  return luaEnv.parse(template.replace(/{{SourceCode}}/gi, code)).exec();
 };

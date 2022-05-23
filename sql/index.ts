@@ -450,13 +450,34 @@ class Master {
   createScript(token: String, data: object) {
     return new Promise(async (res, rej) => {
       let id = rString(13);
+
       this.userByToken(token)
-        .then((Owner) => {
+        .then(async (Owner) => {
           if (Owner) {
             let name = data["name"];
             let content = data["content"];
             if (!name || !content) return rej({ ErrCode: 400 });
             content = Cryptor.encrypt(data["content"]);
+            if (content.length > misc.maxScriptCharacters)
+              return rej({
+                ErrCode: 400,
+                DisplayMessage: `The script is too large, you can have ${misc.maxScriptCharacters} characters at most`,
+              });
+
+            let Scripts = await this.getScriptsCount(Owner["username"])
+              .then((data) => {
+                return data;
+              })
+              .catch((err) => {
+                Cooler.red(err);
+                return undefined;
+              });
+            if (Scripts >= misc.maxScripts)
+              return rej({
+                ErrCode: 400,
+                DisplayMessage:
+                  "You have reached your scripts limit, delete old scripts to create more",
+              });
             try {
               var obcontent = Cryptor.encrypt(Obfuscator(data["content"]));
             } catch {
@@ -632,6 +653,56 @@ class Master {
           }
         }
       );
+    });
+  }
+
+  /**
+   * Get script data from database
+   */
+  async incrementScriptUse(
+    token: String,
+    scriptId: String,
+    icrementCount: Number
+  ) {
+    return new Promise(async (res, rej) => {
+      this.userByToken(token)
+        .then((Owner) => {
+          if (Owner) {
+            let script = this.getScriptById(scriptId)
+              .then((data) => {
+                return data["Data"];
+              })
+              .catch((err) => {
+                return undefined;
+              });
+            if (script) {
+              if (script["owner"].toLowerCase() == Owner["username"]) {
+                Conn.query(
+                  `UPDATE scripts SET uses = uses + ${
+                    icrementCount || 1
+                  } WHERE id = ?`,
+                  [scriptId],
+                  function (err, data) {
+                    if (err) {
+                      rej({ ErrCode: 500 });
+                    } else {
+                      res({ Data: { id: scriptId } });
+                    }
+                  }
+                );
+              } else {
+                rej({ ErrCode: 401 });
+              }
+            } else {
+              rej({ ErrCode: 403 });
+            }
+          } else {
+            rej({ ErrCode: 403 });
+          }
+        })
+        .catch((err) => {
+          rej({ ErrCode: 403 });
+        });
     });
   }
 

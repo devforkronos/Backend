@@ -1,4 +1,6 @@
 {
   "maxAPIs": 5,
-  "maxWebhooks": 3
+  "maxScripts": 100,
+  "maxWebhooks": 3,
+  "maxScriptCharacters": 750
 }

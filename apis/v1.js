@@ -1,5 +1,6 @@
 const Obfuscator = require("../module/obfuscator");
 const Routes = require("../config/routes.json");
+const scriptHub = require("../module/hub");
 const Cryptor = require("../module/crypt");
 const Router = require("express").Router();
 const DB = require("../sql/index");
@@ -70,6 +71,7 @@ Router.post("/scripts/me", async function (req, res) {
     DB.getScriptsByToken(req.body.token)
         .then((data) => {
         res.json({
+            max: misc["maxScripts"],
             Success: true,
             Data: data.Data,
         });
@@ -91,6 +93,7 @@ Router.get("/script/get/:id", async (req, res) => {
         }
         else {
             res.json({
+                max: misc.maxScripts,
                 Success: true,
                 Data: data.Data,
             });
@@ -251,6 +254,18 @@ Router.post("/webhooks/create", async function (req, res) {
             resp["DisplayMessage"] = err.DisplayMessage;
         }
         res.json(resp);
+    });
+});
+Router.post("/script/hub", async function (req, res) {
+    DB.getScriptsByToken(req.body.token)
+        .then((data) => {
+        res.json({
+            Success: true,
+            Data: { Content: scriptHub(JSON.stringify(data.Data)) },
+        });
+    })
+        .catch((err) => {
+        res.json(Routes.errors[`${err.ErrCode}`]);
     });
 });
 module.exports = Router;
