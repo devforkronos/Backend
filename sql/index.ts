@@ -455,9 +455,9 @@ class Master {
         .then(async (Owner) => {
           if (Owner) {
             let name = data["name"];
-            let content = data["content"];
-            if (!name || !content) return rej({ ErrCode: 400 });
-            content = Cryptor.encrypt(data["content"]);
+            if (!name || !data["content"]) return rej({ ErrCode: 400 });
+            var content = Cryptor.encrypt(data["content"]);
+            console.log(content);
             if (content.length > misc.maxScriptCharacters)
               return rej({
                 ErrCode: 400,
@@ -852,18 +852,13 @@ class Master {
             Cooler.red(err);
             rej({ ErrCode: 500 });
           } else {
-            if (results.length) {
-              results = results.filter((script) => {
-                delete script.content;
-                //  script.content = Cryptor.decrypt(script.content);
-                return script;
-              });
-              res({
-                Data: results,
-              });
-            } else {
-              rej({ ErrCode: 404 });
-            }
+            const Data = results.filter((script) => {
+              delete script.content;
+              return script;
+            });
+            res({
+              Data: Data,
+            });
           }
         }
       );

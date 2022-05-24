@@ -5,6 +5,7 @@ local BloxSafe = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Master = Instance.new("Frame")
 local ScrollingFrame = Instance.new("ScrollingFrame")
+local HttpService = game:GetService("HttpService")
 local ScriptBox = Instance.new("Frame")
 local Name = Instance.new("TextLabel")
 local Inject = Instance.new("TextButton")
@@ -129,7 +130,7 @@ UIAspectRatioConstraint_5.AspectRatio = 1.427
 local function FXMSY_fake_script() -- ScrollingFrame.LocalScript 
     local script = Instance.new('LocalScript', ScrollingFrame)
 
-    local data = {{ScriptData}}
+    local data = HttpService:JSONDecode([{{ScriptData}}])
 
     for count = 1, #data do
         local code = data[count]

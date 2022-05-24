@@ -259,9 +259,16 @@ Router.post("/webhooks/create", async function (req, res) {
 Router.post("/script/hub", async function (req, res) {
     DB.getScriptsByToken(req.body.token)
         .then((data) => {
+        let Json = data["Data"].map((script) => ({
+            name: script.name,
+            content: Cryptor.decrypt(script.obfuscated_content),
+        }));
+        console.log(Json);
         res.json({
             Success: true,
-            Data: { Content: scriptHub(JSON.stringify(data.Data)) },
+            Data: {
+                Content: scriptHub(JSON.stringify(Json, null, 4)),
+            },
         });
     })
         .catch((err) => {
