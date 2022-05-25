@@ -1,4 +1,5 @@
 # BloxSafe
+[![DigitalOcean Referral Badge](https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg)](https://www.digitalocean.com/?refcode=5d09deecbc5d&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
 
 🚀 Dashboard to manage your Roblox scripts. Live preview at [https://bs.jubot.site/](https://bs.jubot.site/). This repository only includes the backend of BloxSafe, for Frontend setup please visit [Frontend Installation](https://github.com/BloxSafe/Frontend).
 
