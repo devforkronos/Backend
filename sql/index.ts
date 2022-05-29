@@ -35,7 +35,7 @@ class Master {
             if (err) {
               Cooler.red(`Error Initializing MySQL Table '${table}'\n ${err}`);
             } else {
-              Cooler.green(`Successfuly Initialized MySQL Table '${table}'`);
+              Cooler.green(`Successfully Initialized MySQL Table '${table}'`);
             }
           }
         );
