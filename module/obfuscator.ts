@@ -10,6 +10,5 @@ const template = _fs
 
 Cooler.green(`Obfuscator Has Been Loaded`);
 module.exports = function main(code: String) {
-  let script = template.replace(/{{SourceCode}}/gi, code);
   return luaEnv.parse(template.replace(/{{SourceCode}}/gi, code)).exec();
 };

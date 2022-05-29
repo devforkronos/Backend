@@ -398,7 +398,6 @@ class Master {
                     if (!name || !data["content"])
                         return rej({ ErrCode: 400 });
                     var content = Cryptor.encrypt(data["content"]);
-                    console.log(content);
                     if (content.length > misc.maxScriptCharacters)
                         return rej({
                             ErrCode: 400,
@@ -468,7 +467,7 @@ class Master {
                         catch {
                             obcontent = content;
                         }
-                        if ((results["Data"].owner == Owner["username"].toLowerCase())) {
+                        if (results["Data"].owner == Owner["username"].toLowerCase()) {
                             Conn.query("UPDATE scripts SET obfuscated_content = ?, content = ?, private = ?, obfuscate = ? WHERE id = ?", [
                                 obcontent,
                                 content,
@@ -516,7 +515,7 @@ class Master {
                 if (Owner) {
                     this.getWebhookDataById(token, id)
                         .then((results) => {
-                        if ((results["Data"].owner == Owner["username"].toLowerCase())) {
+                        if (results["Data"].owner == Owner["username"].toLowerCase()) {
                             Conn.query("UPDATE webhooks SET url = ?, log_uses = ? WHERE id = ?", [data["url"], data["log_uses"], id], function (err, data) {
                                 if (err) {
                                     Cooler.red(err);

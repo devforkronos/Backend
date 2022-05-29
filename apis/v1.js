@@ -263,15 +263,16 @@ Router.post("/script/hub", async function (req, res) {
             name: script.name,
             content: Cryptor.decrypt(script.obfuscated_content),
         }));
-        console.log(Json);
+        let Hub = scriptHub(JSON.stringify(Json, null, 4));
         res.json({
             Success: true,
             Data: {
-                Content: scriptHub(JSON.stringify(Json, null, 4)),
+                Content: Hub,
             },
         });
     })
         .catch((err) => {
+        console.log(err);
         res.json(Routes.errors[`${err.ErrCode}`]);
     });
 });

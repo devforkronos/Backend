@@ -129,9 +129,7 @@ UIAspectRatioConstraint_5.AspectRatio = 1.427
 
 local function FXMSY_fake_script() -- ScrollingFrame.LocalScript 
     local script = Instance.new('LocalScript', ScrollingFrame)
-
-    local data = HttpService:JSONDecode([{{ScriptData}}])
-
+    local data = HttpService:JSONDecode([[{{ScriptData}}]]);
     for count = 1, #data do
         local code = data[count]
         print(code)
