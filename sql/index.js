@@ -23,7 +23,7 @@ class Master {
                         Cooler.red(`Error Initializing MySQL Table '${table}'\n ${err}`);
                     }
                     else {
-                        Cooler.green(`Successfuly Initialized MySQL Table '${table}'`);
+                        Cooler.green(`Successfully Initialized MySQL Table '${table}'`);
                     }
                 });
             }
@@ -468,7 +468,7 @@ class Master {
                         catch {
                             obcontent = content;
                         }
-                        if ((results["Data"].owner = Owner["username"].toLowerCase())) {
+                        if ((results["Data"].owner == Owner["username"].toLowerCase())) {
                             Conn.query("UPDATE scripts SET obfuscated_content = ?, content = ?, private = ?, obfuscate = ? WHERE id = ?", [
                                 obcontent,
                                 content,
@@ -516,7 +516,7 @@ class Master {
                 if (Owner) {
                     this.getWebhookDataById(token, id)
                         .then((results) => {
-                        if ((results["Data"].owner = Owner["username"].toLowerCase())) {
+                        if ((results["Data"].owner == Owner["username"].toLowerCase())) {
                             Conn.query("UPDATE webhooks SET url = ?, log_uses = ? WHERE id = ?", [data["url"], data["log_uses"], id], function (err, data) {
                                 if (err) {
                                     Cooler.red(err);
